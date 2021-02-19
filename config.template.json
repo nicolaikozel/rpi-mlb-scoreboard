@@ -1,0 +1,10 @@
+{
+	"weather": {
+		"apikey": "YOUR_API_KEY_HERE",
+		"location": "Chicago,il,us",
+		"metric_units": false
+	},
+	"time_format": "12h",
+	"end_of_day": "00:00",
+	"scrolling_speed": 2
+}
