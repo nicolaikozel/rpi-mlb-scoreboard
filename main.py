@@ -1,5 +1,6 @@
 import argparse
 import sys
+
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
 from views.main_view import MainView
