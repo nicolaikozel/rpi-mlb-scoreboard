@@ -10,7 +10,7 @@ from utils import get_abs_file_path
 
 class BaseView(ABC):
     _font_cache = {}
-    _default_font_name = Font.MEDIUM.value
+    _default_font_name = Font.SMALL.value
 
     def __init__(self, rgb_matrix):
         self._rgb_matrix = rgb_matrix
@@ -31,9 +31,13 @@ class BaseView(ABC):
             if os.path.isfile(path):
                 font = graphics.Font()
                 font.LoadFont(path)
-                self._font_cache[font_name] = font
-                font_dimensions = font_name.split("x")
-                return font, dict(width=int(font_dimensions[0]), height=int(font_dimensions[1]))
+                dimensions = font_name.split("x", 1)
+                size = None
+                if len(dimensions) == 2:
+                    size = dict(width=int(dimensions[0]), height=int(dimensions[1]))
+                ret = (font, size)
+                self._font_cache[font_name] = ret
+                return ret
 
     @abstractmethod
     def render(self):
