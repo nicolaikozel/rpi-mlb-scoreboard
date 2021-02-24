@@ -13,6 +13,9 @@ class ClockView(BaseView):
         super().__init__(rgb_matrix)
         self._loc_font, _ = self._get_font(Font.TINY) 
         self._time_font, self._time_font_size = self._get_font(Font.LARGE)
+        self._last_minute = None
+        self._offscreen_canvas = self._rgb_matrix.CreateFrameCanvas()
+        self._outline_canvas_animation = OutlineCanvasAnimation(max_cycles=1, wait_until_armed=True)
 
     def _render_loc_and_time(self, canvas, time):
         loc_color = Color.BLUE
@@ -24,20 +27,14 @@ class ClockView(BaseView):
         graphics.DrawText(canvas, self._time_font, x_pos, 15, time_color.value, time_as_string)
 
     def render(self):
-        last_minute = None
-        offscreen_canvas = self._rgb_matrix.CreateFrameCanvas()
-        outline_canvas_animation = OutlineCanvasAnimation(max_cycles=1, wait_until_armed=True)
-        
-        while True:
-            offscreen_canvas.Clear()
+        self._offscreen_canvas.Clear()
 
-            cur_time = datetime.now()
-            cur_minute = cur_time.minute
-            if last_minute and last_minute != cur_minute:
-                outline_canvas_animation.reset_and_arm()
-            last_minute = cur_minute
-            outline_canvas_animation.render(canvas=offscreen_canvas)
-            self._render_loc_and_time(canvas=offscreen_canvas, time=cur_time)
+        cur_time = datetime.now()
+        cur_minute = cur_time.minute
+        if self._last_minute and self._last_minute != cur_minute:
+            self._outline_canvas_animation.reset_and_arm()
+        self._last_minute = cur_minute
+        self._outline_canvas_animation.render(canvas=self._offscreen_canvas)
+        self._render_loc_and_time(canvas=self._offscreen_canvas, time=cur_time)
 
-            offscreen_canvas = self._rgb_matrix.SwapOnVSync(offscreen_canvas)
-            self._sleep(0.05)
+        self._offscreen_canvas = self._rgb_matrix.SwapOnVSync(self._offscreen_canvas)

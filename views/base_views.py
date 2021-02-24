@@ -15,9 +15,6 @@ class BaseView(ABC):
     def __init__(self, rgb_matrix):
         self._rgb_matrix = rgb_matrix
 
-    def _sleep(self, value):
-        time.sleep(value)
-
     def _get_font(self, font_name=None):
         if not font_name:
             font_name = self._default_font_name
