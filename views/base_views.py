@@ -10,7 +10,7 @@ from utils import get_abs_file_path
 
 class BaseView(ABC):
     _font_cache = {}
-    _default_font_name = Font.SMALL.value
+    _default_font_name = Font.SMALL
 
     def __init__(self, rgb_matrix):
         self._rgb_matrix = rgb_matrix
@@ -21,6 +21,8 @@ class BaseView(ABC):
     def _get_font(self, font_name=None):
         if not font_name:
             font_name = self._default_font_name
+
+        font_name = font_name.value
 
         if font_name in self._font_cache:
             return self._font_cache[font_name]

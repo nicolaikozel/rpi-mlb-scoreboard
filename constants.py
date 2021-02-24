@@ -14,3 +14,10 @@ class Font(Enum):
     SMALL = "5x7"
     MEDIUM = "6x10"
     LARGE = "6x12"
+
+
+class Direction(Enum):
+    RIGHT = 1
+    DOWN = 2
+    LEFT = 3
+    UP = 4

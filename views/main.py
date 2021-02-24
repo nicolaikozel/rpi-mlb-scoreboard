@@ -1,5 +1,5 @@
 from views.base_views import BaseView
-from views.clock_view import ClockView
+from views.clock import ClockView
 
 
 class MainView(BaseView):

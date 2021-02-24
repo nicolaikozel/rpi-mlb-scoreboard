@@ -3,7 +3,7 @@ import sys
 
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
-from views.main_view import MainView
+from views.main import MainView
 
 
 def parse_args():
