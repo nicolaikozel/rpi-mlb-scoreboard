@@ -21,9 +21,7 @@ class BaseView(ABC):
     def _get_font(self, font_name=None):
         if not font_name:
             font_name = self._default_font_name
-
         font_name = font_name.value
-
         if font_name in self._font_cache:
             return self._font_cache[font_name]
 

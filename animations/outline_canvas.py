@@ -2,11 +2,16 @@ from rgbmatrix import graphics
 
 from animations.base_animations import BaseAnimation
 from constants import Direction
+from graphics.gradient import generate_repeating_gradient
 
 
 class OutlineCanvasAnimation(BaseAnimation):
-    def __init__(self, color, length=3):
+    def __init__(self, color=None, gradient=None, length=3):
         self._color = color
+        if not gradient:
+            gradient = generate_repeating_gradient(steps=6)
+        self._gradient = gradient
+        self._gradient_index = 0
         self._length = 3
         self._x1 = 0
         self._x2 = self._x1 + self._length
@@ -49,4 +54,8 @@ class OutlineCanvasAnimation(BaseAnimation):
                 self._direction = Direction.RIGHT
 
     def _render_frame(self, canvas):
-        graphics.DrawLine(canvas, self._x1, self._y1, self._x2, self._y2, self._color.value)
+        if not self._color:
+            color = self._gradient.get_current_color(advance=True)
+        else:
+            color = self._color.value
+        graphics.DrawLine(canvas, self._x1, self._y1, self._x2, self._y2, color)
