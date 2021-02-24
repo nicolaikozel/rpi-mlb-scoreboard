@@ -6,10 +6,11 @@ from graphics.gradient import generate_repeating_gradient
 
 
 class OutlineCanvasAnimation(BaseAnimation):
-    def __init__(self, color=None, gradient=None, length=3):
+    def __init__(self, wait_until_armed=False, max_cycles=None, color=None, gradient=generate_repeating_gradient(steps=6), length=3):
+        super().__init__(wait_until_armed)
+        self._completed_cycles = 0
+        self._max_cycles = max_cycles
         self._color = color
-        if not gradient:
-            gradient = generate_repeating_gradient(steps=6)
         self._gradient = gradient
         self._gradient_index = 0
         self._length = 3
@@ -18,6 +19,13 @@ class OutlineCanvasAnimation(BaseAnimation):
         self._y1 = 0
         self._y2 = 0
         self._direction = Direction.RIGHT
+
+    @property
+    def finished(self):
+        return self._completed_cycles == self._max_cycles
+
+    def _reset(self):
+        self._completed_cycles = 0
 
     def _advance_frame(self, canvas):
         if self._direction == Direction.RIGHT:
@@ -52,6 +60,8 @@ class OutlineCanvasAnimation(BaseAnimation):
                 self._y1 = self._y2 = 0
                 self._x2 += self._length
                 self._direction = Direction.RIGHT
+                if self._max_cycles:
+                    self._completed_cycles += 1
 
     def _render_frame(self, canvas):
         if not self._color:
