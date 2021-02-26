@@ -1,9 +1,8 @@
 import argparse
+import time
 import sys
 
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
-
-from views.main import MainView
 
 
 def parse_args():
@@ -38,10 +37,23 @@ rgb_matrix = RGBMatrix(options=rgb_matrix_options)
 print(f"Running rpi-mlb-scoreboard-({rgb_matrix.height}x{rgb_matrix.width})")
 
 # Render the main view - CTRL-C to exit
+### TEMP
+from controllers.looping_views import LoopingViewsController
+from views.clock import ClockView
+clock_loop_controller = LoopingViewsController(
+    views=[
+        ClockView(rgb_matrix=rgb_matrix, loc="Tor"),
+        ClockView(rgb_matrix=rgb_matrix, loc="Ist"),
+    ],
+    view_change_delay=3,
+)
+clock_loop_controller.start()
+#######
 try:
     print("Press CTRL-C to stop running.")
-    MainView(rgb_matrix=rgb_matrix).render()
+    clock_loop_controller.join()
 except KeyboardInterrupt:
     print("\nExiting.\n")
+    clock_loop_controller.stop()
+    clock_loop_controller.join()
     sys.exit(0)
-

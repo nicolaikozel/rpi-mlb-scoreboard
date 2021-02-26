@@ -4,15 +4,18 @@ from abc import ABC, abstractmethod
 
 from rgbmatrix import graphics
 
+from common.threading import StoppableThread
 from constants import Font
 from utils import get_abs_file_path
 
 
-class BaseView(ABC):
+class BaseView(StoppableThread, ABC):
     _font_cache = {}
     _default_font_name = Font.SMALL
+    _render_delay = 1
 
-    def __init__(self, rgb_matrix):
+    def __init__(self, rgb_matrix, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._rgb_matrix = rgb_matrix
 
     def _get_font(self, font_name=None):
@@ -37,5 +40,12 @@ class BaseView(ABC):
                 return ret
 
     @abstractmethod
-    def render(self):
+    def _render(self):
         pass
+
+    def run(self):
+        while True:
+            self._render()
+            time.sleep(self._render_delay)
+            if self.stopped:
+                break
