@@ -8,25 +8,6 @@ from graphics.text import center_text_position
 from views.base_views import BaseView
 
 
-class ViewWrapper:
-    def __init__(self, view, *args, **kwargs):
-        self._args, self._kwargs = args, kwargs
-        self._view = view
-        self.reset()
-
-    def reset(self):
-        self._instance = self._view(*self._args, **self._kwargs)
-
-    def start(self):
-        self._instance.start()
-    
-    def join(self):
-        self._instance.join()
-    
-    def stop(self):
-        self._instance.stop()
-
-
 class ClockView(BaseView):
     _render_delay = 0.05
 

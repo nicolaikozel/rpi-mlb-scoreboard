@@ -49,3 +49,25 @@ class BaseView(StoppableThread, ABC):
             time.sleep(self._render_delay)
             if self.stopped:
                 break
+
+
+class RestartableView:
+    def __init__(self, view, *args, **kwargs):
+        self._args, self._kwargs = args, kwargs
+        self._view = view
+        self.reset()
+
+    def is_alive(self):
+        return self._instance.is_alive()
+
+    def reset(self):
+        self._instance = self._view(*self._args, **self._kwargs)
+
+    def start(self):
+        self._instance.start()
+    
+    def join(self):
+        self._instance.join()
+    
+    def stop(self):
+        self._instance.stop()

@@ -22,6 +22,7 @@ class LoopingViewsController(BaseController):
         if self.current_view:
             self.current_view.stop()
             self.current_view.join()
+        view.reset()
         view.start()
 
     def _switch_to_next_view(self):
