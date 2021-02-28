@@ -8,29 +8,19 @@ class BaseController(StoppableThread, ABC):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._loop_count = 0
-
-    @abstractproperty
-    def current_thread(self) -> StoppableThread:
-        pass
+        self._current_thread = None
 
     def _cleanup(self):
-        self.current_thread.stop()
-        self.current_thread.join()
-
-    def _switch_thread(self, thread):
-        if self.current_thread:
-            self.current_thread.stop()
-            self.current_thread.join()
-        thread.reset()
-        thread.start()
+        self._current_thread.stop()
+        self._current_thread.join()
 
     @abstractmethod
     def _update_thread(self):
         pass
 
     def run(self):
-        if not self.current_thread.is_alive():
-            self.current_thread.start()
+        if not self._current_thread.is_alive():
+            self._current_thread.start()
 
         while True:
             self._update_thread()
@@ -38,3 +28,16 @@ class BaseController(StoppableThread, ABC):
             self._loop_count += 1
             if self.stopped:
                 break
+
+
+class GenericContoller(BaseController, ABC):
+    def _set_current_thread(self, thread: StoppableThread):
+        self._current_thread = thread
+
+    def _switch_thread(self, thread):
+        if self._current_thread:
+            self._current_thread.stop()
+            self._current_thread.join()
+        thread.reset()
+        thread.start()
+        self._set_current_thread(thread=thread)

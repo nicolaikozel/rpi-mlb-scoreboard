@@ -2,10 +2,10 @@ import time
 from typing import List
 
 from common.threading import RestartableThread
-from controllers.base_controllers import BaseController
+from controllers.base_controllers import GenericContoller
 
 
-class LoopingThreadsController(BaseController):
+class LoopingThreadsController(GenericContoller):
     def __init__(
         self,
         threads: List[RestartableThread],
@@ -17,10 +17,7 @@ class LoopingThreadsController(BaseController):
         self._threads = threads
         self._thread_index = 0
         self._thread_change_delay = thread_change_delay
-
-    @property
-    def current_thread(self) -> RestartableThread:
-        return self._threads[self._thread_index]
+        self._set_current_thread(thread=self._threads[self._thread_index])
 
     def _switch_to_next_thread(self):
         next_thread_index = self._thread_index + 1
