@@ -2,10 +2,10 @@ import time
 from typing import List
 
 from common.threading import RestartableThread
-from controllers.base_controllers import GenericContoller
+from controllers.base_controllers import BaseController
 
 
-class LoopingThreadsController(GenericContoller):
+class LoopingThreadsController(BaseController):
     def __init__(
         self,
         threads: List[RestartableThread],

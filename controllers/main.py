@@ -1,12 +1,12 @@
 from rgbmatrix import RGBMatrix
 
 from common.threading import RestartableThread
-from controllers.base_controllers import GenericContoller
+from controllers.base_controllers import BaseController
 from controllers.looping_threads import LoopingThreadsController
 from views.clock import ClockView
 
 
-class MainController(GenericContoller):
+class MainController(BaseController):
     def __init__(self, rgb_matrix: RGBMatrix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._rgb_matrix = rgb_matrix

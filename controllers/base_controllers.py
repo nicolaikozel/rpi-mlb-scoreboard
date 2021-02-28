@@ -14,6 +14,17 @@ class BaseController(StoppableThread, ABC):
         self._current_thread.stop()
         self._current_thread.join()
 
+    def _set_current_thread(self, thread: StoppableThread):
+        self._current_thread = thread
+
+    def _switch_thread(self, thread):
+        if self._current_thread:
+            self._current_thread.stop()
+            self._current_thread.join()
+        thread.reset()
+        thread.start()
+        self._set_current_thread(thread=thread)
+
     @abstractmethod
     def _update_thread(self):
         pass
@@ -28,16 +39,3 @@ class BaseController(StoppableThread, ABC):
             self._loop_count += 1
             if self.stopped:
                 break
-
-
-class GenericContoller(BaseController, ABC):
-    def _set_current_thread(self, thread: StoppableThread):
-        self._current_thread = thread
-
-    def _switch_thread(self, thread):
-        if self._current_thread:
-            self._current_thread.stop()
-            self._current_thread.join()
-        thread.reset()
-        thread.start()
-        self._set_current_thread(thread=thread)
