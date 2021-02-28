@@ -2,17 +2,17 @@ from rgbmatrix import graphics
 
 from animations.base_animations import BaseAnimation
 from constants import Direction
-from graphics.gradient import generate_repeating_gradient
+from graphics.gradient import Gradient
 
 
 class OutlineCanvasAnimation(BaseAnimation):
     def __init__(
         self,
-        wait_until_armed=False,
-        max_cycles=None,
-        color=None,
-        gradient=generate_repeating_gradient(steps=6),
-        length=3,
+        wait_until_armed: bool = False,
+        max_cycles: int = None,
+        color: graphics.Color = None,
+        gradient: Gradient = Gradient.generate_repeating_gradient(steps=6),
+        length: int = 3,
     ):
         super().__init__(wait_until_armed)
         self._completed_cycles = 0
@@ -28,7 +28,7 @@ class OutlineCanvasAnimation(BaseAnimation):
         self._direction = Direction.RIGHT
 
     @property
-    def finished(self):
+    def finished(self) -> bool:
         return self._completed_cycles == self._max_cycles
 
     def _reset(self):
