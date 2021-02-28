@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod, abstractproperty
 
 
 class BaseAnimation(ABC):
-    def __init__(self, wait_until_armed=False):
+    def __init__(self, wait_until_armed: bool = False):
         self._armed = False
         self._wait_until_armed = wait_until_armed
-    
+
     @abstractproperty
-    def finished(self):
+    def finished(self) -> bool:
         pass
 
     def arm(self):
@@ -16,7 +16,7 @@ class BaseAnimation(ABC):
     @abstractmethod
     def _reset(self):
         pass
-    
+
     def reset(self):
         self._armed = False
         self._reset()

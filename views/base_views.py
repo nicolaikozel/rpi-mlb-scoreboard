@@ -1,8 +1,9 @@
 import time
 import os
+from typing import Dict, Optional, Tuple
 from abc import ABC, abstractmethod
 
-from rgbmatrix import graphics
+from rgbmatrix import graphics, RGBMatrix
 
 from common.threading import StoppableThread
 from constants import Font
@@ -14,11 +15,11 @@ class BaseView(StoppableThread, ABC):
     _default_font_name = Font.SMALL
     _render_delay = 1
 
-    def __init__(self, rgb_matrix, *args, **kwargs):
+    def __init__(self, rgb_matrix: RGBMatrix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._rgb_matrix = rgb_matrix
 
-    def _get_font(self, font_name=None):
+    def _get_font(self, font_name: Font = None) -> Tuple[graphics.Font, Optional[Dict]]:
         if not font_name:
             font_name = self._default_font_name
         font_name = font_name.value
@@ -52,12 +53,12 @@ class BaseView(StoppableThread, ABC):
 
 
 class RestartableView:
-    def __init__(self, view, *args, **kwargs):
+    def __init__(self, view: BaseView, *args, **kwargs):
         self._args, self._kwargs = args, kwargs
         self._view = view
         self.reset()
 
-    def is_alive(self):
+    def is_alive(self) -> bool:
         return self._instance.is_alive()
 
     def reset(self):
@@ -65,9 +66,9 @@ class RestartableView:
 
     def start(self):
         self._instance.start()
-    
+
     def join(self):
         self._instance.join()
-    
+
     def stop(self):
         self._instance.stop()
