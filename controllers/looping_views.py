@@ -1,13 +1,13 @@
 import time
 from typing import List
 
+from common.threading import RestartableThread
 from controllers.base_controllers import BaseController
-from views.base_views import RestartableView
 
 
 class LoopingViewsController(BaseController):
     def __init__(
-        self, views: List[RestartableView], view_change_delay: int, *args, **kwargs
+        self, views: List[RestartableThread], view_change_delay: int, *args, **kwargs
     ):
         super().__init__(*args, **kwargs)
         self._views = views
@@ -15,7 +15,7 @@ class LoopingViewsController(BaseController):
         self._view_change_delay = view_change_delay
 
     @property
-    def current_view(self) -> RestartableView:
+    def current_view(self) -> RestartableThread:
         return self._views[self._view_index]
 
     def _cleanup(self):
