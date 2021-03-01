@@ -4,6 +4,7 @@ import sys
 
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
+from config import load_config
 from controllers.main import MainController
 
 
@@ -65,16 +66,16 @@ def create_rgb_matrix_options(args: object) -> RGBMatrixOptions:
         options.gpio_slowdown = args.led_slowdown_gpio
     return options
 
+#Load config
+load_config()
 
 # Parse arguments and initialize the RGB matrix
 args = parse_args()
 rgb_matrix_options = create_rgb_matrix_options(args=args)
 rgb_matrix = RGBMatrix(options=rgb_matrix_options)
 
-# Log
-print(f"Running rpi-mlb-scoreboard-({rgb_matrix.height}x{rgb_matrix.width})")
-
 # Render the main view - CTRL-C to exit
+print(f"Running rpi-mlb-scoreboard-({rgb_matrix.height}x{rgb_matrix.width})")
 main_controller = MainController(rgb_matrix=rgb_matrix)
 main_controller.start()
 try:
