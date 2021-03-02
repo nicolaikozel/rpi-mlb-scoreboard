@@ -4,6 +4,7 @@ from common.threading import RestartableThread
 from controllers.base_controllers import BaseController
 from controllers.looping_threads import LoopingThreadsController
 from views.clock import ClockView
+from views.weather import WeatherView
 
 
 class MainController(BaseController):
@@ -13,10 +14,12 @@ class MainController(BaseController):
         self._clock_view_loop_controller = LoopingThreadsController(
             threads=[
                 RestartableThread(
-                    thread=ClockView, rgb_matrix=self._rgb_matrix, loc="Tor"
+                    thread=ClockView,
+                    rgb_matrix=self._rgb_matrix,
                 ),
                 RestartableThread(
-                    thread=ClockView, rgb_matrix=self._rgb_matrix, loc="Ist"
+                    thread=WeatherView,
+                    rgb_matrix=self._rgb_matrix,
                 ),
             ],
             thread_change_delay=3,

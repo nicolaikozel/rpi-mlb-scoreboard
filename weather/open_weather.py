@@ -1,7 +1,10 @@
+import time
 from typing import Dict
 
 from config import Config
 from common.api_client import APIClient, RequestMethod
+from common.threading import DataThread
+from weather.data_classes import Weather, WeatherData
 
 
 class OpenWeatherAPIClient(APIClient):
@@ -16,12 +19,22 @@ class OpenWeatherAPIClient(APIClient):
         return Config.get()["weather"]["api_key"]
 
     @classmethod
-    def get_current_weather(cls, location: str = None) -> Dict:
+    def get_current_weather(cls, location: str = None) -> Weather:
         config = Config.get()
         if not location:
             location = config["weather"]["location"]
-        return cls._make_request(
+        response = cls._make_request(
             method=RequestMethod.GET,
             path="weather",
             params=dict(q=location, units=config["weather"]["units"]),
         )
+        return Weather(
+            temperature=int(response["main"]["temp"]),
+            weather_type=response["weather"][0]["main"],
+        )
+
+
+class OpenWeatherDataThread(DataThread):
+    def _fetch_data(self) -> WeatherData:
+        current_weather = OpenWeatherAPIClient.get_current_weather()
+        return WeatherData(current=current_weather)

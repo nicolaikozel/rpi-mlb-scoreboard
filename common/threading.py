@@ -1,3 +1,5 @@
+import time
+from abc import ABC, abstractmethod
 from typing import Type
 
 from threading import Event, Thread
@@ -40,3 +42,25 @@ class RestartableThread:
 
     def stop(self):
         self._instance.stop()
+
+
+class DataThread(StoppableThread, ABC):
+    def __init__(self, refresh_rate: int, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._refresh_rate = refresh_rate
+        self._data = None
+
+    @property
+    def data(self):
+        return self._data
+
+    @abstractmethod
+    def _fetch_data(self) -> object:
+        pass
+
+    def run(self):
+        while True:
+            self._data = self._fetch_data()
+            time.sleep(self._refresh_rate)
+            if self.stopped:
+                break

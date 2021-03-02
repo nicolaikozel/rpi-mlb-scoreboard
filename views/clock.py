@@ -14,12 +14,10 @@ class ClockView(BaseView):
     def __init__(
         self,
         rgb_matrix: RGBMatrix,
-        loc: str,
         loc_color: Color = Color.BLUE,
         time_color: Color = Color.RED,
     ):
         super().__init__(rgb_matrix)
-        self._location = loc
         self._loc_font, _ = self._get_font(Font.TINY)
         self._loc_color = loc_color
         self._time_font, self._time_font_size = self._get_font(Font.LARGE)
@@ -33,9 +31,7 @@ class ClockView(BaseView):
     def _render_loc_and_time(self, canvas: FrameCanvas, time: datetime):
         time_as_string = time.strftime("%I:%M")
 
-        graphics.DrawText(
-            canvas, self._loc_font, 2, 6, self._loc_color.value, self._location
-        )
+        graphics.DrawText(canvas, self._loc_font, 2, 6, self._loc_color.value, "Tor")
         x_pos = center_text_position(
             text=time_as_string, center_pos=16, font_width=self._time_font_size["width"]
         )

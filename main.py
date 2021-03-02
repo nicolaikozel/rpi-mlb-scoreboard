@@ -2,6 +2,7 @@ import argparse
 import time
 import sys
 
+from data import Data
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
 from controllers.main import MainController
@@ -66,8 +67,13 @@ def create_rgb_matrix_options(args: object) -> RGBMatrixOptions:
     return options
 
 
-# Parse arguments and initialize the RGB matrix
+# Parse arguments
 args = parse_args()
+
+# Start fetching data
+Data.start_fetching()
+
+# Initialize the RGB matrix
 rgb_matrix_options = create_rgb_matrix_options(args=args)
 rgb_matrix = RGBMatrix(options=rgb_matrix_options)
 

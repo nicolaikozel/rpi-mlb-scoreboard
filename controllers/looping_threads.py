@@ -25,7 +25,8 @@ class LoopingThreadsController(BaseController):
             next_thread_index = 0
         self._switch_thread(thread=self._threads[next_thread_index])
         self._thread_index = next_thread_index
+        self._loop_count = 0
 
     def _update_thread(self):
-        if self._loop_count % self._thread_change_delay == 0:
+        if self._loop_count == self._thread_change_delay:
             self._switch_to_next_thread()
