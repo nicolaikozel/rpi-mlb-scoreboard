@@ -32,10 +32,13 @@ class BaseView(StoppableThread, ABC):
             if os.path.isfile(path):
                 font = graphics.Font()
                 font.LoadFont(path)
-                dimensions = font_name.split("x", 1)
                 size = None
-                if len(dimensions) == 2:
-                    size = dict(width=int(dimensions[0]), height=int(dimensions[1]))
+                if font_name.startswith("tom"):
+                    size = dict(width=4, height=6)
+                else:
+                    dimensions = font_name.split("x", 1)
+                    if len(dimensions) == 2:
+                        size = dict(width=int(dimensions[0]), height=int(dimensions[1]))
                 ret = (font, size)
                 self._font_cache[font_name] = ret
                 return ret

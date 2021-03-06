@@ -4,7 +4,7 @@ from rgbmatrix import FrameCanvas, graphics, RGBMatrix
 
 from animations.outline_canvas import OutlineCanvasAnimation
 from constants import Color, Font
-from graphics.text import center_text_position
+from graphics.common import get_x_pos_for_centered_text
 from views.base_views import BaseView
 
 
@@ -32,8 +32,8 @@ class ClockView(BaseView):
         time_as_string = time.strftime("%I:%M")
 
         graphics.DrawText(canvas, self._loc_font, 2, 6, self._loc_color.value, "Tor")
-        x_pos = center_text_position(
-            text=time_as_string, center_pos=16, font_width=self._time_font_size["width"]
+        x_pos = get_x_pos_for_centered_text(
+            center_pos=16, text=time_as_string, font_width=self._time_font_size["width"]
         )
         graphics.DrawText(
             canvas, self._time_font, x_pos, 15, self._time_color.value, time_as_string
