@@ -30,7 +30,7 @@ class OpenWeatherAPIClient(APIClient):
         )
         return Weather(
             temperature=int(response["main"]["temp"]),
-            weather_type=response["weather"][0]["main"],
+            condition=response["weather"][0]["main"],
         )
 
 
