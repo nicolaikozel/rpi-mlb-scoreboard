@@ -18,6 +18,7 @@ class BaseView(StoppableThread, ABC):
     def __init__(self, rgb_matrix: RGBMatrix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._rgb_matrix = rgb_matrix
+        self._offscreen_canvas = self._rgb_matrix.CreateFrameCanvas()
 
     def _get_font(self, font_name: Font = None) -> Tuple[graphics.Font, Optional[Dict]]:
         if not font_name:
@@ -49,7 +50,9 @@ class BaseView(StoppableThread, ABC):
 
     def run(self):
         while True:
+            self._offscreen_canvas.Clear()
             self._render()
+            self._offscreen_canvas = self._rgb_matrix.SwapOnVSync(self._offscreen_canvas)
             time.sleep(self._render_delay)
             if self.stopped:
                 break

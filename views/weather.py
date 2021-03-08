@@ -48,7 +48,6 @@ class WeatherView(BaseView):
         temperature_color: Color = Color.BLUE,
     ):
         super().__init__(rgb_matrix)
-        self._offscreen_canvas = self._rgb_matrix.CreateFrameCanvas()
         self._icon = None
         self._icon_name = None
         self._temperature_color = temperature_color
@@ -84,7 +83,6 @@ class WeatherView(BaseView):
         self._offscreen_canvas.SetImage(self._icon, x_pos, y_pos, unsafe=False)
 
     def _render(self):
-        self._offscreen_canvas.Clear()
         # Get weather data
         weather_data = Data.get("weather")
         temperature = "0"
@@ -125,5 +123,3 @@ class WeatherView(BaseView):
             font_size=size,
             x_pos=x_pos + CONDITION_ICON_WIDTH + margin_width,
         )
-
-        self._offscreen_canvas = self._rgb_matrix.SwapOnVSync(self._offscreen_canvas)
