@@ -81,9 +81,7 @@ class WeatherView(BaseView):
         self._icon.resize(
             (self._rgb_matrix.width, self._rgb_matrix.height), Image.ANTIALIAS
         )
-        self._offscreen_canvas.SetImage(
-            self._icon, x_pos, y_pos, unsafe=False
-        )
+        self._offscreen_canvas.SetImage(self._icon, x_pos, y_pos, unsafe=False)
 
     def _render(self):
         self._offscreen_canvas.Clear()
@@ -94,17 +92,25 @@ class WeatherView(BaseView):
         if weather_data:
             temperature = str(weather_data.current.temperature)
             condition = weather_data.current.condition
-    
+
         # Get condition icon data and determine x_pos
         condition_icon_data = WEATHER_CONDITION_ICON_MAP[condition]
         font, size = self._get_font(Font.TINY)
-        font_width = len(temperature)*size["width"]
-        margin_width = CONDITION_ICON_TEMP_MARGIN - 1 if temperature.startswith("-") else CONDITION_ICON_TEMP_MARGIN
+        font_width = len(temperature) * size["width"]
+        margin_width = (
+            CONDITION_ICON_TEMP_MARGIN - 1
+            if temperature.startswith("-")
+            else CONDITION_ICON_TEMP_MARGIN
+        )
         x_pos = (
             get_x_pos_for_centered_obj(
                 center_pos=16,
-                obj_width=CONDITION_ICON_WIDTH+margin_width+font_width+CELCIUS_INDICATOR_WIDTH,
-            ) + condition_icon_data.get("x_offset", 0)
+                obj_width=CONDITION_ICON_WIDTH
+                + margin_width
+                + font_width
+                + CELCIUS_INDICATOR_WIDTH,
+            )
+            + condition_icon_data.get("x_offset", 0)
         )
 
         # Render condition icon and temperature

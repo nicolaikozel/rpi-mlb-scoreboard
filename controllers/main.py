@@ -13,16 +13,16 @@ class MainController(BaseController):
         self._rgb_matrix = rgb_matrix
         self._clock_view_loop_controller = LoopingThreadsController(
             threads=[
-                # RestartableThread(
-                #    thread=ClockView,
-                #    rgb_matrix=self._rgb_matrix,
-                # ),
+                RestartableThread(
+                    thread=ClockView,
+                    rgb_matrix=self._rgb_matrix,
+                ),
                 RestartableThread(
                     thread=WeatherView,
                     rgb_matrix=self._rgb_matrix,
                 ),
             ],
-            thread_change_delay=1000,
+            thread_change_delay=10,
         )
         self._set_current_thread(thread=self._clock_view_loop_controller)
 

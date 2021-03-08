@@ -51,7 +51,7 @@ class DataThread(StoppableThread, ABC):
         self._data = None
 
     @property
-    def data(self):
+    def data(self) -> object:
         return self._data
 
     @abstractmethod
