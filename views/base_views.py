@@ -52,7 +52,9 @@ class BaseView(StoppableThread, ABC):
         while True:
             self._offscreen_canvas.Clear()
             self._render()
-            self._offscreen_canvas = self._rgb_matrix.SwapOnVSync(self._offscreen_canvas)
+            self._offscreen_canvas = self._rgb_matrix.SwapOnVSync(
+                self._offscreen_canvas
+            )
             time.sleep(self._render_delay)
             if self.stopped:
                 break

@@ -6,13 +6,13 @@ from rgbmatrix import FrameCanvas, graphics, RGBMatrix
 
 from constants import Color, Font
 from data import Data
-from graphics.common import get_x_pos_for_centered_obj
+from graphics.common import center_object
 from utils import get_abs_file_path
 from views.base_views import BaseView
 from weather.data_classes import WeatherCondition
 from weather.open_weather import OpenWeatherDataThread
 
-CELCIUS_INDICATOR_WIDTH = 3
+CELCIUS_INDICATOR_SIZE = 3
 CONDITION_ICON_TEMP_MARGIN = 3
 CONDITION_ICON_WIDTH = 15
 WEATHER_CONDITION_ICON_MAP = {
@@ -23,18 +23,23 @@ WEATHER_CONDITION_ICON_MAP = {
     ),
     WeatherCondition.CLOUDS: dict(
         name="cloudy",
+        y_offset=1,
     ),
     WeatherCondition.RAIN: dict(
         name="rainy",
+        x_offset=-1,
     ),
     WeatherCondition.DRIZZLE: dict(
         name="rainy",
+        x_offset=-1,
     ),
     WeatherCondition.THUNDERSTORM: dict(
         name="stormy",
+        x_offset=-1,
     ),
     WeatherCondition.SNOW: dict(
         name="snowy",
+        x_offset=-1,
     ),
 }
 
@@ -53,20 +58,20 @@ class WeatherView(BaseView):
         self._temperature_color = temperature_color
 
     def _render_temperature(
-        self, temperature: str, font: Font, font_size: Dict, x_pos: int
+        self, temperature: str, font: Font, font_size: Dict, x_pos: int, y_pos: int
     ):
         graphics.DrawText(
             self._offscreen_canvas,
             font,
             x_pos,
-            11,
+            y_pos + font_size["height"],
             self._temperature_color.value,
             temperature,
         )
         graphics.DrawCircle(
             self._offscreen_canvas,
-            x_pos + len(temperature) * font_size["width"],
-            4,
+            x_pos + len(temperature) * font_size["width"] + 1,
+            y_pos,
             1,
             self._temperature_color.value,
         )
@@ -85,28 +90,29 @@ class WeatherView(BaseView):
     def _render(self):
         # Get weather data
         weather_data = Data.get("weather")
-        temperature = "0"
-        condition = WeatherCondition.CLOUDS
+        temperature = "13"
+        condition = WeatherCondition.SNOW
         if weather_data:
             temperature = str(weather_data.current.temperature)
             condition = weather_data.current.condition
+            pass
 
         # Get condition icon data and determine x_pos
         condition_icon_data = WEATHER_CONDITION_ICON_MAP[condition]
-        font, size = self._get_font(Font.TINY)
-        font_width = len(temperature) * size["width"]
+        font, font_size = self._get_font(Font.TINY)
+        font_width = len(temperature) * font_size["width"]
         margin_width = (
             CONDITION_ICON_TEMP_MARGIN - 1
             if temperature.startswith("-")
             else CONDITION_ICON_TEMP_MARGIN
         )
         x_pos = (
-            get_x_pos_for_centered_obj(
+            center_object(
                 center_pos=16,
-                obj_width=CONDITION_ICON_WIDTH
+                obj_length=CONDITION_ICON_WIDTH
                 + margin_width
                 + font_width
-                + CELCIUS_INDICATOR_WIDTH,
+                + CELCIUS_INDICATOR_SIZE,
             )
             + condition_icon_data.get("x_offset", 0)
         )
@@ -115,11 +121,13 @@ class WeatherView(BaseView):
         self._render_condition(
             icon_name=condition_icon_data["name"],
             x_pos=x_pos,
-            y_pos=condition_icon_data.get("y_offset", 0),
+            y_pos=center_object(center_pos=8, obj_length=16)
+            + condition_icon_data.get("y_offset", 0),
         )
         self._render_temperature(
             temperature=temperature,
             font=font,
-            font_size=size,
+            font_size=font_size,
             x_pos=x_pos + CONDITION_ICON_WIDTH + margin_width,
+            y_pos=center_object(center_pos=8, obj_length=font_size["height"]),
         )
