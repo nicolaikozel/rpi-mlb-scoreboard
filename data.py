@@ -1,8 +1,10 @@
+from mlb.upcoming_games import UpcomingGamesDataThread
 from weather.open_weather import OpenWeatherDataThread
 
 
 class Data:
     _data = {
+        "upcoming_games": UpcomingGamesDataThread(refresh_rate=3600, daemon=True),
         "weather": OpenWeatherDataThread(refresh_rate=30, daemon=True),
     }
 
