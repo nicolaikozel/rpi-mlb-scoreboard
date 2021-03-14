@@ -12,9 +12,9 @@ class ScrollingTextAnimation(BaseAnimation):
         text: str,
         font: graphics.Font,
         font_size: Dict,
+        color: graphics.Color,
         starting_x_pos: int,
         starting_y_pos: int,
-        color: graphics.Color = None,
         wait_until_armed: bool = False,
     ):
         super().__init__(wait_until_armed)
