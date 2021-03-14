@@ -4,9 +4,13 @@ from rgbmatrix import graphics
 
 
 class Color(Enum):
-    RED = graphics.Color(255, 0, 0)
-    GREEN = graphics.Color(0, 255, 0)
+    BJ_PRIMARY = graphics.Color(19, 74, 142)
+    BJ_SECONDARY = graphics.Color(29,45,92)
+    BJ_TERTIARY = graphics.Color(218,41,28)
     BLUE = graphics.Color(0, 0, 255)
+    GREEN = graphics.Color(0, 255, 0)
+    RED = graphics.Color(255, 0, 0)
+    WHITE = graphics.Color(255, 255, 255)
 
 
 class Font(Enum):

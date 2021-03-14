@@ -22,13 +22,13 @@ class MainController(BaseController):
                         rgb_matrix=self._rgb_matrix,
                     ),
                 },
-                {
-                    "key": "weather",
-                    "instance": RestartableThread(
-                        thread=WeatherView,
-                        rgb_matrix=self._rgb_matrix,
-                    ),
-                },
+                #{
+                #    "key": "weather",
+                #    "instance": RestartableThread(
+                #        thread=WeatherView,
+                #        rgb_matrix=self._rgb_matrix,
+                #    ),
+                #},
             ],
             thread_change_delay=3,
         )
@@ -49,5 +49,6 @@ class MainController(BaseController):
                     ),
                 },
             )
+            self._main_loop_controller.remove_thread(key="clock")
         elif not upcoming_games and has_thread_for_key:
             self._main_loop_controller.remove_thread(key=key)
