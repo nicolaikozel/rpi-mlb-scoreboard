@@ -52,12 +52,12 @@ class Gradient:
         )
 
     @classmethod
-    def generate_brightness_gradient(cls, color: Color, percentages=[0.25, 0.5]):
-        shades = []
+    def generate_brightness_gradient(cls, color: Color, percentages=[0.25, 0.5, 1]):
+        colors = []
         c = color.value
         r = c.red
         g = c.green
         b = c.blue
         for percent in sorted(percentages):
-            shades.append(graphics.Color(r*percent, g*percent, b*percent))
-        return cls(colors=shades + [c])
+            colors.append(graphics.Color(r*percent, g*percent, b*percent))
+        return cls(colors=colors)
