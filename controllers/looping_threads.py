@@ -20,7 +20,7 @@ class LoopingThreadsController(BaseController):
 
     def _switch_to_next_thread(self):
         next_thread_index = self._thread_index + 1
-        if next_thread_index == len(self._threads):
+        if next_thread_index >= len(self._threads):
             next_thread_index = 0
         self._switch_thread(thread=self._get_thread_instance(index=next_thread_index))
         self._thread_index = next_thread_index
