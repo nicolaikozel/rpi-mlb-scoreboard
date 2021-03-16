@@ -27,14 +27,21 @@ class ClockView(BaseView):
             max_cycles=1, wait_until_armed=True
         )
 
-    def _render_loc_and_time(self, canvas: FrameCanvas, time: datetime):
+    def _render_loc_and_time(self, time: datetime):
         time_as_string = time.strftime("%I:%M")
-        graphics.DrawText(canvas, self._loc_font, 2, 6, self._loc_color.value, "Tor")
+        graphics.DrawText(
+            self._offscreen_canvas, self._loc_font, 2, 6, self._loc_color.value, "Tor"
+        )
         x_pos = center_text(
             center_pos=16, text=time_as_string, font_width=self._time_font_size["width"]
         )
         graphics.DrawText(
-            canvas, self._time_font, x_pos, 15, self._time_color.value, time_as_string
+            self._offscreen_canvas,
+            self._time_font,
+            x_pos,
+            15,
+            self._time_color.value,
+            time_as_string,
         )
 
     def _render(self):
@@ -46,6 +53,6 @@ class ClockView(BaseView):
         self._last_minute = cur_minute
 
         # Render location and time
-        self._render_loc_and_time(canvas=self._offscreen_canvas, time=cur_time)
+        self._render_loc_and_time(time=cur_time)
         # Render outline animation
         self._outline_canvas_animation.render(canvas=self._offscreen_canvas)
