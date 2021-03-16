@@ -1,6 +1,7 @@
 import mlbgame
 from rgbmatrix import FrameCanvas, graphics, RGBMatrix
 
+from animations.controllers.looping_animations import LoopingAnimationsController
 from animations.outline_canvas import OutlineCanvasAnimation
 from animations.pulsing_text import PulsingTextAnimation
 from animations.scrolling_text import ScrollingTextAnimation
@@ -24,28 +25,41 @@ class UpcomingGameView(BaseView):
 
         gameday_text = "Gameday!"
         font, font_size = self._get_font(Font.TINY)
-        self._gameday_text_animation = PulsingTextAnimation(
-            text=gameday_text,
-            font=font,
-            x_pos=1+center_text(center_pos=16, text=gameday_text, font_width=font_size["width"]),
-            y_pos=1+font_size["height"],
-            gradient=Gradient.generate_brightness_gradient(color=Color.BLUE)
+        self._looping_animations_controller = LoopingAnimationsController(
+            animations=[
+                PulsingTextAnimation(
+                    text=gameday_text,
+                    font=font,
+                    x_pos=1
+                    + center_text(
+                        center_pos=16, text=gameday_text, font_width=font_size["width"]
+                    ),
+                    y_pos=1 + font_size["height"],
+                    gradient=Gradient.generate_brightness_gradient(color=Color.BLUE),
+                ),
+                ScrollingTextAnimation(
+                    text=f"Gameday! {self._game.away_team} at {self._game.home_team}",
+                    font=font,
+                    font_size=font_size,
+                    color=Color.BLUE,
+                    starting_x_pos=self._offscreen_canvas.width,
+                    starting_y_pos=1 + font_size["height"],
+                ),
+            ]
         )
-        #self._gameday_text_animation = ScrollingTextAnimation(
-        #    text=f"Gameday! {self._game.away_team} at {self._game.home_team}",
-        #    font=font,
-        #    font_size=font_size,
-        #    color=Color.BLUE,
-        #    starting_x_pos=self._offscreen_canvas.width,
-        #    starting_y_pos=1+font_size["height"],
-        #)
         self._outline_canvas_animation = OutlineCanvasAnimation(
-            gradient=Gradient(colors=[Color.WHITE.value, Color.BJ_PRIMARY.value, Color.BJ_SECONDARY.value]),
+            gradient=Gradient(
+                colors=[
+                    Color.WHITE.value,
+                    Color.BJ_PRIMARY.value,
+                    Color.BJ_SECONDARY.value,
+                ]
+            ),
         )
 
     def _render_game_time(self):
         font, font_size = self._get_font(Font.SMALL)
-        time = self._game.game_start_time.split(' ', 1)[0]
+        time = self._game.game_start_time.split(" ", 1)[0]
         graphics.DrawText(
             self._offscreen_canvas,
             font,
@@ -56,6 +70,6 @@ class UpcomingGameView(BaseView):
         )
 
     def _render(self):
-        self._gameday_text_animation.render(canvas=self._offscreen_canvas)
+        self._looping_animations_controller.render(canvas=self._offscreen_canvas)
         self._render_game_time()
         self._outline_canvas_animation.render(canvas=self._offscreen_canvas)

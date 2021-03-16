@@ -11,11 +11,17 @@ class Gradient:
         self._colors = colors
         self._index = 0
 
-    def advance_color(self):
+    def advance_color(self) -> bool:
+        """
+        Returns whether the gradient was reset
+        as a result of advancing the color
+        """
         if self._index < len(self._colors) - 1:
             self._index += 1
+            return False
         else:
             self._index = 0
+            return True
 
     def get_current_color(self, advance=False) -> graphics.Color:
         color = self._colors[self._index]
@@ -59,5 +65,5 @@ class Gradient:
         g = c.green
         b = c.blue
         for percent in sorted(percentages):
-            colors.append(graphics.Color(r*percent, g*percent, b*percent))
+            colors.append(graphics.Color(r * percent, g * percent, b * percent))
         return cls(colors=colors)

@@ -2,23 +2,29 @@ from abc import ABC, abstractmethod, abstractproperty
 
 
 class BaseAnimation(ABC):
-    def __init__(self, wait_until_armed: bool = False):
+    def __init__(self, max_cycles: int = None, wait_until_armed: bool = False):
+        self._completed_cycles = 0
+        self._max_cycles = max_cycles
         self._armed = False
         self._wait_until_armed = wait_until_armed
 
-    @abstractproperty
+    @property
     def finished(self) -> bool:
-        pass
+        return self._completed_cycles == self._max_cycles
+
+    def increment_completed_cycles(self):
+        if self._max_cycles:
+            self._completed_cycles += 1
 
     def arm(self):
         self._armed = True
 
-    @abstractmethod
     def _reset(self):
         pass
 
     def reset(self):
         self._armed = False
+        self._completed_cycles = 0
         self._reset()
 
     def reset_and_arm(self):

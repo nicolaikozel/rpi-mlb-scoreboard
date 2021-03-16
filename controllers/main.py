@@ -22,13 +22,13 @@ class MainController(BaseController):
                         rgb_matrix=self._rgb_matrix,
                     ),
                 },
-                #{
+                # {
                 #    "key": "weather",
                 #    "instance": RestartableThread(
                 #        thread=WeatherView,
                 #        rgb_matrix=self._rgb_matrix,
                 #    ),
-                #},
+                # },
             ],
             thread_change_delay=3,
         )

@@ -15,9 +15,10 @@ class ScrollingTextAnimation(BaseAnimation):
         color: graphics.Color,
         starting_x_pos: int,
         starting_y_pos: int,
+        max_cycles: int = None,
         wait_until_armed: bool = False,
     ):
-        super().__init__(wait_until_armed)
+        super().__init__(max_cycles, wait_until_armed)
         self._text = text
         self._font = font
         self._font_size = font_size
@@ -28,10 +29,6 @@ class ScrollingTextAnimation(BaseAnimation):
         self._y_pos = self._starting_y_pos
         self._direction = Direction.LEFT
 
-    @property
-    def finished(self) -> bool:
-        return False
-
     def _reset(self):
         self._x_pos = self._starting_x_pos
         self._y_pos = self._starting_y_pos
@@ -39,7 +36,8 @@ class ScrollingTextAnimation(BaseAnimation):
     def _advance_frame(self, canvas):
         if self._direction == Direction.LEFT:
             self._x_pos -= 1
-            if self._x_pos < -(len(self._text)*self._font_size["width"]):
+            if self._x_pos < -(len(self._text) * self._font_size["width"]):
+                self.increment_completed_cycles()
                 self._reset()
 
     def _render_frame(self, canvas):

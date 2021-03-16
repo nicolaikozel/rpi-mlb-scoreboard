@@ -8,15 +8,13 @@ from graphics.gradient import Gradient
 class OutlineCanvasAnimation(BaseAnimation):
     def __init__(
         self,
-        wait_until_armed: bool = False,
-        max_cycles: int = None,
         color: graphics.Color = None,
         gradient: Gradient = Gradient.generate_repeating_gradient(steps=6),
         length: int = 3,
+        max_cycles: int = None,
+        wait_until_armed: bool = False,
     ):
-        super().__init__(wait_until_armed)
-        self._completed_cycles = 0
-        self._max_cycles = max_cycles
+        super().__init__(max_cycles, wait_until_armed)
         self._color = color
         self._gradient = gradient
         self._gradient_index = 0
@@ -26,13 +24,6 @@ class OutlineCanvasAnimation(BaseAnimation):
         self._y1 = 0
         self._y2 = 0
         self._direction = Direction.RIGHT
-
-    @property
-    def finished(self) -> bool:
-        return self._completed_cycles == self._max_cycles
-
-    def _reset(self):
-        self._completed_cycles = 0
 
     def _advance_frame(self, canvas):
         if self._direction == Direction.RIGHT:
@@ -67,8 +58,7 @@ class OutlineCanvasAnimation(BaseAnimation):
                 self._y1 = self._y2 = 0
                 self._x2 += self._length
                 self._direction = Direction.RIGHT
-                if self._max_cycles:
-                    self._completed_cycles += 1
+                self.increment_completed_cycles()
 
     def _render_frame(self, canvas):
         if not self._color:
