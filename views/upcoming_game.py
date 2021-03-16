@@ -36,14 +36,16 @@ class UpcomingGameView(BaseView):
                     ),
                     y_pos=1 + font_size["height"],
                     gradient=Gradient.generate_brightness_gradient(color=Color.BLUE),
+                    max_cycles=10,
                 ),
                 ScrollingTextAnimation(
-                    text=f"Gameday! {self._game.away_team} at {self._game.home_team}",
+                    text=f"{self._game.away_team} at {self._game.home_team}",
                     font=font,
                     font_size=font_size,
                     color=Color.BLUE,
                     starting_x_pos=self._offscreen_canvas.width,
                     starting_y_pos=1 + font_size["height"],
+                    max_cycles=1,
                 ),
             ]
         )

@@ -15,6 +15,7 @@ class ScrollingTextAnimation(BaseAnimation):
         color: graphics.Color,
         starting_x_pos: int,
         starting_y_pos: int,
+        speed: int = 1,
         max_cycles: int = None,
         wait_until_armed: bool = False,
     ):
@@ -27,6 +28,7 @@ class ScrollingTextAnimation(BaseAnimation):
         self._starting_y_pos = starting_y_pos
         self._x_pos = self._starting_x_pos
         self._y_pos = self._starting_y_pos
+        self._speed = speed
         self._direction = Direction.LEFT
 
     def _reset(self):
@@ -35,7 +37,7 @@ class ScrollingTextAnimation(BaseAnimation):
 
     def _advance_frame(self, canvas):
         if self._direction == Direction.LEFT:
-            self._x_pos -= 1
+            self._x_pos -= self._speed
             if self._x_pos < -(len(self._text) * self._font_size["width"]):
                 self.increment_completed_cycles()
                 self._reset()
