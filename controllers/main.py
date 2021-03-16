@@ -49,6 +49,5 @@ class MainController(BaseController):
                     ),
                 },
             )
-            self._main_loop_controller.remove_thread(key="clock")
         elif not upcoming_games and has_thread_for_key:
             self._main_loop_controller.remove_thread(key=key)
