@@ -9,9 +9,9 @@ from mlb.data_classes import CurrentGameData
 
 class CurrentGameDataThread(DataThread):
     def _fetch_data(self) -> Optional[CurrentGameData]:
-        upcoming_games = Data.get("upcoming_games")
-        active_game = upcoming_games.active_game
+        games_today = Data.get("games_today")
+        active_game = games_today.active_game
         if active_game:
-            innings = mlbgame.game_events(active_game.game_id)
-            return CurrentGameData(innings=innings)
+            overview = mlbgame.overview(active_game.game_id)
+            return CurrentGameData(overview=overview)
         return None

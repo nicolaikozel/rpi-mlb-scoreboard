@@ -1,10 +1,12 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import mlbgame
 
+from mlb.constants import Base, InningState
 
-class UpcomingGamesData:
+
+class GamesTodayDataThread:
     def __init__(self, games: List[mlbgame.game.GameScoreboard]):
         self.games = games
 
@@ -24,22 +26,16 @@ class UpcomingGamesData:
 
 
 class CurrentGameData:
-    def __init__(self, innings: List[mlbgame.events.Inning]):
-        self.innings = innings
+    def __init__(self, overview: mlbgame.game.Overview):
+        self.overview = overview
+
+    def is_runner_on_base(self, base: Base) -> bool:
+        return bool(getattr(self.overview, f"runner_on_{base.value}", None))
 
     @property
-    def current_inning(self) -> mlbgame.events.Inning:
-        return self.innings[-1]
+    def inning_and_state(self) -> Tuple[int, InningState]:
+        return self.overview.inning, InningState(self.overview.inning_state)
 
     @property
-    def is_top_of_inning(self):
-        return not self.current_inning.bottom
-
-    @property
-    def current_at_bat(self) -> Optional[mlbgame.events.AtBat]:
-        current_inning = self.current_inning
-        half = current_inning.top if self.is_top_of_inning else current_inning.bottom
-        for item in reversed(half):
-            if isinstance(item, mlbgame.events.AtBat):
-                return item
-        return None
+    def pitch_count(self) -> str:
+        return f"{self.overview.balls}-{self.overview.strikes}"
