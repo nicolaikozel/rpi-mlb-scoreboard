@@ -10,37 +10,17 @@ from graphics.common import center_object
 from utils import get_abs_file_path
 from views.base_views import BaseView
 from weather.data_classes import WeatherCondition
-from weather.open_weather import OpenWeatherDataThread
 
 CELCIUS_INDICATOR_SIZE = 3
 CONDITION_ICON_TEMP_MARGIN = 3
 CONDITION_ICON_WIDTH = 15
 WEATHER_CONDITION_ICON_MAP = {
-    WeatherCondition.CLEAR: dict(
-        name="sunny",
-        x_offset=-1,
-        y_offset=1,
-    ),
-    WeatherCondition.CLOUDS: dict(
-        name="cloudy",
-        y_offset=1,
-    ),
-    WeatherCondition.RAIN: dict(
-        name="rainy",
-        x_offset=-1,
-    ),
-    WeatherCondition.DRIZZLE: dict(
-        name="rainy",
-        x_offset=-1,
-    ),
-    WeatherCondition.THUNDERSTORM: dict(
-        name="stormy",
-        x_offset=-1,
-    ),
-    WeatherCondition.SNOW: dict(
-        name="snowy",
-        x_offset=-1,
-    ),
+    WeatherCondition.CLEAR: dict(name="sunny", x_offset=-1, y_offset=1,),
+    WeatherCondition.CLOUDS: dict(name="cloudy", y_offset=1,),
+    WeatherCondition.RAIN: dict(name="rainy", x_offset=-1,),
+    WeatherCondition.DRIZZLE: dict(name="rainy", x_offset=-1,),
+    WeatherCondition.THUNDERSTORM: dict(name="stormy", x_offset=-1,),
+    WeatherCondition.SNOW: dict(name="snowy", x_offset=-1,),
 }
 
 
@@ -48,9 +28,7 @@ class WeatherView(BaseView):
     _render_delay = 0.05
 
     def __init__(
-        self,
-        rgb_matrix: RGBMatrix,
-        temperature_color: Color = Color.BLUE,
+        self, rgb_matrix: RGBMatrix, temperature_color: Color = Color.BLUE,
     ):
         super().__init__(rgb_matrix)
         self._icon = None
@@ -106,16 +84,13 @@ class WeatherView(BaseView):
             if temperature.startswith("-")
             else CONDITION_ICON_TEMP_MARGIN
         )
-        x_pos = (
-            center_object(
-                center_pos=16,
-                obj_length=CONDITION_ICON_WIDTH
-                + margin_width
-                + font_width
-                + CELCIUS_INDICATOR_SIZE,
-            )
-            + condition_icon_data.get("x_offset", 0)
-        )
+        x_pos = center_object(
+            center_pos=16,
+            obj_length=CONDITION_ICON_WIDTH
+            + margin_width
+            + font_width
+            + CELCIUS_INDICATOR_SIZE,
+        ) + condition_icon_data.get("x_offset", 0)
 
         # Render condition icon and temperature
         self._render_condition(

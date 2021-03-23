@@ -18,15 +18,13 @@ class MainController(BaseController):
                 {
                     "key": "clock",
                     "instance": RestartableThread(
-                        thread=ClockView,
-                        rgb_matrix=self._rgb_matrix,
+                        thread=ClockView, rgb_matrix=self._rgb_matrix,
                     ),
                 },
                 {
                     "key": "weather",
                     "instance": RestartableThread(
-                        thread=WeatherView,
-                        rgb_matrix=self._rgb_matrix,
+                        thread=WeatherView, rgb_matrix=self._rgb_matrix,
                     ),
                 },
             ],
@@ -34,20 +32,24 @@ class MainController(BaseController):
         )
         self._set_current_thread(thread=self._main_loop_controller)
 
-    def _update_thread(self):
-        upcoming_games = Data.get("upcoming_games")
-        key = "upcoming-games"
+    def _inject_or_remove_upcoming_game_thread(self):
+        key = "upcoming-game"
         has_thread_for_key = self._main_loop_controller.has_thread_for_key(key=key)
-        if upcoming_games and not has_thread_for_key:
+
+        upcoming_games = Data.get("upcoming_games")
+        if upcoming_games and not upcoming_games.active_game and not has_thread_for_key:
             self._main_loop_controller.add_thread(
                 thread={
                     "key": key,
                     "instance": RestartableThread(
                         thread=UpcomingGameView,
                         rgb_matrix=self._rgb_matrix,
-                        game=upcoming_games[0],
+                        game=upcoming_games.next_game,
                     ),
                 },
             )
-        elif not upcoming_games and has_thread_for_key:
+        elif has_thread_for_key:
             self._main_loop_controller.remove_thread(key=key)
+
+    def _update_thread(self):
+        self._inject_or_remove_upcoming_game_thread()

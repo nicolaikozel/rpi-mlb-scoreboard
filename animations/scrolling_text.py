@@ -44,10 +44,5 @@ class ScrollingTextAnimation(BaseAnimation):
 
     def _render_frame(self, canvas):
         graphics.DrawText(
-            canvas,
-            self._font,
-            self._x_pos,
-            self._y_pos,
-            self._color.value,
-            self._text,
+            canvas, self._font, self._x_pos, self._y_pos, self._color.value, self._text,
         )

@@ -31,10 +31,5 @@ class PulsingTextAnimation(BaseAnimation):
     def _render_frame(self, canvas):
         color = self._gradient.get_current_color()
         graphics.DrawText(
-            canvas,
-            self._font,
-            self._x_pos,
-            self._y_pos,
-            color,
-            self._text,
+            canvas, self._font, self._x_pos, self._y_pos, color, self._text,
         )

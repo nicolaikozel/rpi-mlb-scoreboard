@@ -5,14 +5,14 @@ import mlbgame
 
 from config import Config
 from common.threading import DataThread
-from weather.data_classes import Weather, WeatherData
+from mlb.data_classes import UpcomingGamesData
 
 
 class UpcomingGamesDataThread(DataThread):
-    def _fetch_data(self) -> List[mlbgame.game.GameScoreboard]:
+    def _fetch_data(self) -> UpcomingGamesData:
         now = datetime.now()
         team = Config.get()["team"]
         games = mlbgame.day(
             year=now.year, month=now.month, day=now.day, home=team, away=team
         )
-        return games
+        return UpcomingGamesData(games=games)

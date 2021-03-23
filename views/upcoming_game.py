@@ -16,9 +16,7 @@ class UpcomingGameView(BaseView):
     _render_delay = 0.05
 
     def __init__(
-        self,
-        rgb_matrix: RGBMatrix,
-        game: mlbgame.game.GameScoreboard,
+        self, rgb_matrix: RGBMatrix, game: mlbgame.game.GameScoreboard,
     ):
         super().__init__(rgb_matrix)
         self._game = game
