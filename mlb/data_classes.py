@@ -11,11 +11,15 @@ class GamesTodayDataThread:
         self.games = games
 
     @property
-    def next_game(self) -> Optional[mlbgame.game.GameScoreboard]:
+    def upcoming_game(self) -> Optional[mlbgame.game.GameScoreboard]:
         for game in self.games:
             if game.game_start_time > datetime.now():
                 return game
         return None
+
+    @property
+    def is_upcoming_game(self) -> bool:
+        return bool(self.upcoming_game)
 
     @property
     def active_game(self) -> Optional[mlbgame.game.GameScoreboard]:

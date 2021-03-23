@@ -1,58 +1,51 @@
 from datetime import datetime
 
-from rgbmatrix import FrameCanvas, graphics, RGBMatrix
+from rgbmatrix import graphics, RGBMatrix
 
 from animations.outline_canvas import OutlineCanvasAnimation
-from constants import Color, Font
-from graphics.common import center_text
+from config import Config
+from graphics.font import Font, FontStyle
+from graphics.utils import center_text
 from views.base_views import BaseView
 
 
 class ClockView(BaseView):
     _render_delay = 0.05
 
-    def __init__(
-        self,
-        rgb_matrix: RGBMatrix,
-        loc_color: Color = Color.BLUE,
-        time_color: Color = Color.RED,
-    ):
+    def __init__(self, rgb_matrix: RGBMatrix):
         super().__init__(rgb_matrix)
-        self._loc_font, _ = self._get_font(Font.TINY)
-        self._loc_color = loc_color
-        self._time_font, self._time_font_size = self._get_font(Font.LARGE)
-        self._time_color = time_color
         self._last_minute = None
         self._outline_canvas_animation = OutlineCanvasAnimation(
             max_cycles=1, wait_until_armed=True
         )
 
-    def _render_loc_and_time(self, time: datetime):
-        time_as_string = time.strftime("%I:%M")
+    def _render_location(self):
+        color = graphics.Color(*Config.get()["clock"]["location_color"])
         graphics.DrawText(
-            self._offscreen_canvas, self._loc_font, 2, 6, self._loc_color.value, "Tor"
+            self._offscreen_canvas, Font.get_font(FontStyle.TINY), 2, 6, color, "Tor",
         )
-        x_pos = center_text(
-            center_pos=16, text=time_as_string, font_width=self._time_font_size["width"]
-        )
+
+    def _render_time(self, time: str):
+        color = graphics.Color(*Config.get()["clock"]["time_color"])
+        font, font_size = Font.get_font(FontStyle.LARGE)
+        x_pos = center_text(center_pos=16, text=time, font_width=font_size["width"])
         graphics.DrawText(
-            self._offscreen_canvas,
-            self._time_font,
-            x_pos,
-            15,
-            self._time_color.value,
-            time_as_string,
+            self._offscreen_canvas, font, x_pos, 15, self._time_color.value, time,
         )
 
     def _render(self):
         # Get current date and time
-        cur_time = datetime.now()
-        cur_minute = cur_time.minute
-        if self._last_minute and self._last_minute != cur_minute:
+        now = datetime.now()
+
+        # Reset and arm outline animation every minute
+        current_minute = now.minute
+        if self._last_minute and self._last_minute != current_minute:
             self._outline_canvas_animation.reset_and_arm()
-        self._last_minute = cur_minute
+        self._last_minute = current_minute
 
         # Render location and time
-        self._render_loc_and_time(time=cur_time)
+        self._render_location()
+        self._render_time(time=now.strftime("%I:%M"))
+
         # Render outline animation
         self._outline_canvas_animation.render(canvas=self._offscreen_canvas)

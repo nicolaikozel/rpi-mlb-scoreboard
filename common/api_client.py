@@ -1,7 +1,7 @@
 import urllib.parse
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Dict, Tuple, Union
+from typing import Dict, Union
 
 import requests
 

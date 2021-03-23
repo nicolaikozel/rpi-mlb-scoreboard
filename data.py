@@ -11,10 +11,10 @@ class Data:
     }
 
     @classmethod
-    def get(cls, key: str):
+    def get(cls, key: str) -> object:
         return cls._data[key].data
 
     @classmethod
-    def start_fetching(cls):
+    def start_all_data_threads(cls):
         for thread in cls._data.values():
             thread.start()

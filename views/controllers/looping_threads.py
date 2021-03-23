@@ -2,7 +2,7 @@ import time
 from typing import Dict
 
 from common.threading import RestartableThread
-from controllers.base_controllers import BaseController
+from views.controllers.base_controllers import BaseController
 
 
 class LoopingThreadsController(BaseController):

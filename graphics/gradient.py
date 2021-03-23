@@ -3,8 +3,6 @@ from typing import List
 
 from rgbmatrix import graphics
 
-from constants import Color
-
 
 class Gradient:
     def __init__(self, colors: List[graphics.Color]):
@@ -58,12 +56,11 @@ class Gradient:
         )
 
     @classmethod
-    def generate_brightness_gradient(cls, color: Color, percentages=[0.25, 0.5, 1]):
+    def generate_brightness_gradient(cls, color: graphics.Color, percentages=[0.25, 0.5, 1]):
         colors = []
-        c = color.value
-        r = c.red
-        g = c.green
-        b = c.blue
+        r = color.red
+        g = color.green
+        b = color.blue
         for percent in sorted(percentages):
             colors.append(graphics.Color(r * percent, g * percent, b * percent))
         return cls(colors=colors)

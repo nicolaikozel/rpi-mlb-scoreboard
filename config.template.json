@@ -1,7 +1,21 @@
 {
+	"clock": {
+		"location_color": [0, 0, 255],
+		"time_color": [255, 0, 0]
+	},
+	"upcoming_game": {
+		"team_names_color": [0, 0, 255],
+		"game_time_color": [218, 41, 28],
+		"outline_animation_gradient": [
+			[255, 255, 255],
+			[19, 74, 142],
+			[29, 45, 92]
+		]
+	},
 	"weather": {
-		"apikey": "YOUR_API_KEY_HERE",
+		"api_key": "YOUR_API_KEY_HERE",
 		"location": "Hamilton,on,ca",
+		"temperature_color": [0, 0, 255],
 		"units": "metric"
 	}
 }

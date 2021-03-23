@@ -5,7 +5,7 @@ import sys
 from data import Data
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
 
-from controllers.main import MainController
+from views.controllers.main import MainController
 
 
 def parse_args():
@@ -55,7 +55,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def create_rgb_matrix_options(args: object) -> RGBMatrixOptions:
+def get_rgb_matrix_options(args: object) -> RGBMatrixOptions:
     options = RGBMatrixOptions()
     options.rows = args.led_rows
     options.cols = args.led_cols
@@ -71,13 +71,13 @@ def create_rgb_matrix_options(args: object) -> RGBMatrixOptions:
 args = parse_args()
 
 # Start fetching data
-Data.start_fetching()
+Data.start_all_data_threads()
 
 # Initialize the RGB matrix
-rgb_matrix_options = create_rgb_matrix_options(args=args)
-rgb_matrix = RGBMatrix(options=rgb_matrix_options)
+options = get_rgb_matrix_options(args=args)
+rgb_matrix = RGBMatrix(options=options)
 
-# Render the main view - CTRL-C to exit
+# Start the main controller - CTRL-C to exit
 print(f"Running rpi-mlb-scoreboard-({rgb_matrix.height}x{rgb_matrix.width})")
 main_controller = MainController(rgb_matrix=rgb_matrix)
 main_controller.start()

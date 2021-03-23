@@ -1,7 +1,6 @@
 from rgbmatrix import graphics
 
 from animations.base_animations import BaseAnimation
-from constants import Font
 from graphics.gradient import Gradient
 
 
