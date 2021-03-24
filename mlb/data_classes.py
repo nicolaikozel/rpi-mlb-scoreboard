@@ -38,7 +38,12 @@ class CurrentGameData:
 
     @property
     def inning_and_state(self) -> Tuple[int, InningState]:
-        return self.overview.inning, InningState(self.overview.inning_state)
+        inning_state = InningState.TOP
+        try:
+            inning_state = InningState(self.overview.inning_state)
+        except ValueError:
+            pass
+        return self.overview.inning, inning_state
 
     @property
     def pitch_count(self) -> str:

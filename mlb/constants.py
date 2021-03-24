@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class Base:
+class Base(Enum):
     FIRST = "1b"
     SECOND = "2b"
     THIRD = "3b"
 
 
-class InningState:
+class InningState(Enum):
     TOP = "Top"
     BOTTOM = "Bottom"

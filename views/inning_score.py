@@ -28,18 +28,20 @@ class InningScoreView(BaseView):
         )
 
     def _render_inning_indicator(self, inning_state: InningState):
+        color = Color.YELLOW.value
         if inning_state == InningState.TOP:
             # Arrow
-            graphics.DrawLine(self._offscreen_canvas, 25, 5, 25, 5, Color.YELLOW.value)
-            graphics.DrawLine(self._offscreen_canvas, 24, 5, 26, 5, Color.YELLOW.value)
-            graphics.DrawLine(self._offscreen_canvas, 23, 5, 27, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 25, 5, 25, 5, color)
+            graphics.DrawLine(self._offscreen_canvas, 24, 6, 26, 6, color)
+            graphics.DrawLine(self._offscreen_canvas, 23, 7, 27, 7, color)
         else:
             # Upside down arrow
-            graphics.DrawLine(self._offscreen_canvas, 23, 5, 27, 5, Color.YELLOW.value)
-            graphics.DrawLine(self._offscreen_canvas, 24, 5, 26, 5, Color.YELLOW.value)
-            graphics.DrawLine(self._offscreen_canvas, 25, 5, 25, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 23, 5, 27, 5, color)
+            graphics.DrawLine(self._offscreen_canvas, 24, 6, 26, 6, color)
+            graphics.DrawLine(self._offscreen_canvas, 25, 7, 25, 7, color)
 
     def _render_inning(self, inning: int, inning_state: InningState):
+        color = Color.YELLOW.value
         self._render_inning_indicator(inning_state=inning_state)
         font, _ = Font.get_font(FontStyle.TINY)
         graphics.DrawText(
@@ -47,8 +49,8 @@ class InningScoreView(BaseView):
             font,
             28,
             5,
-            Color.YELLOW.value,
-            inning,
+            color,
+            str(inning),
         )
 
     def _render(self):

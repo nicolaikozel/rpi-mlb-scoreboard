@@ -1,7 +1,7 @@
 import time
 from abc import ABC, abstractmethod, abstractproperty
 
-from common.threading import StoppableThread
+from common.threading import RestartableThread, StoppableThread
 
 
 class BaseController(StoppableThread, ABC):
@@ -21,7 +21,8 @@ class BaseController(StoppableThread, ABC):
         if self._current_thread:
             self._current_thread.stop()
             self._current_thread.join()
-        thread.reset()
+        if isinstance(thread, RestartableThread):
+            thread.reset()
         thread.start()
         self._set_current_thread(thread=thread)
 
