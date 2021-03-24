@@ -56,7 +56,9 @@ class Gradient:
         )
 
     @classmethod
-    def generate_brightness_gradient(cls, color: graphics.Color, percentages=[0.25, 0.5, 1]):
+    def generate_brightness_gradient(
+        cls, color: graphics.Color, percentages=[0.25, 0.5, 1]
+    ):
         colors = []
         r = color.red
         g = color.green

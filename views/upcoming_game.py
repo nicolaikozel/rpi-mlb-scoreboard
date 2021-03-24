@@ -20,7 +20,9 @@ class UpcomingGameView(BaseView):
         super().__init__(rgb_matrix)
         game = Data.get("games_today").upcoming_game
         pulsing_text = "Gameday!"
-        team_names_color = graphics.Color(*Config.get()["upcoming_game"]["team_names_color"])
+        team_names_color = graphics.Color(
+            *Config.get()["upcoming_game"]["team_names_color"]
+        )
         font, font_size = Font.get_font(FontStyle.TINY)
         self._looping_animations_controller = LoopingAnimationsController(
             animations=[
@@ -32,7 +34,9 @@ class UpcomingGameView(BaseView):
                         center_pos=16, text=pulsing_text, font_width=font_size["width"]
                     ),
                     y_pos=1 + font_size["height"],
-                    gradient=Gradient.generate_brightness_gradient(color=team_names_color),
+                    gradient=Gradient.generate_brightness_gradient(
+                        color=team_names_color
+                    ),
                     max_cycles=10,
                 ),
                 ScrollingTextAnimation(
@@ -46,12 +50,16 @@ class UpcomingGameView(BaseView):
                 ),
             ]
         )
-        outline_animation_gradient = graphics.Color(*Config.get()["upcoming_game"]["team_names_color"])
+        outline_animation_gradient = graphics.Color(
+            *Config.get()["upcoming_game"]["team_names_color"]
+        )
         self._outline_canvas_animation = OutlineCanvasAnimation(
             gradient=Gradient(
                 colors=[
                     graphics.Color(*color)
-                    for color in Config.get()["upcoming_game"]["outline_animation_gradient"]
+                    for color in Config.get()["upcoming_game"][
+                        "outline_animation_gradient"
+                    ]
                 ],
             ),
         )

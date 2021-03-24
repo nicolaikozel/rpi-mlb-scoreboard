@@ -19,7 +19,12 @@ class InningScoreView(BaseView):
     def _render_pitch_count(self, pitch_count: str):
         font, font_size = Font.get_font(FontStyle.TINY)
         graphics.DrawText(
-            self._offscreen_canvas, font, 1, 8, Color.YELLOW.value, pitch_count,
+            self._offscreen_canvas,
+            font,
+            1,
+            8,
+            Color.YELLOW.value,
+            pitch_count,
         )
 
     def _render_inning_indicator(self, inning_state: InningState):
@@ -38,7 +43,12 @@ class InningScoreView(BaseView):
         self._render_inning_indicator()
         font, font_size = Font.get_font(FontStyle.TINY)
         graphics.DrawText(
-            self._offscreen_canvas, font, 28, 5, Color.YELLOW.value, inning,
+            self._offscreen_canvas,
+            font,
+            28,
+            5,
+            Color.YELLOW.value,
+            inning,
         )
 
     def _render(self):

@@ -75,13 +75,16 @@ class WeatherView(BaseView):
         condition_icon_data = WEATHER_CONDITION_ICON_MAP[condition]
         font_width = len(temperature) * self._font_size["width"]
         margin_width = MARGIN_WIDTH - 1 if temperature.startswith("-") else MARGIN_WIDTH
-        x_pos = center_object(
-            center_pos=16,
-            obj_length=CONDITION_ICON_WIDTH
-            + margin_width
-            + font_width
-            + CELCIUS_INDICATOR_WIDTH,
-        ) + condition_icon_data.get("x_offset", 0)
+        x_pos = (
+            center_object(
+                center_pos=16,
+                obj_length=CONDITION_ICON_WIDTH
+                + margin_width
+                + font_width
+                + CELCIUS_INDICATOR_WIDTH,
+            )
+            + condition_icon_data.get("x_offset", 0)
+        )
 
         # Render condition icon and temperature
         self._render_condition_icon(

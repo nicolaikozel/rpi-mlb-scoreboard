@@ -22,7 +22,12 @@ class ClockView(BaseView):
     def _render_location(self):
         color = graphics.Color(*Config.get()["clock"]["location_color"])
         graphics.DrawText(
-            self._offscreen_canvas, Font.get_font(FontStyle.TINY), 2, 6, color, "Tor",
+            self._offscreen_canvas,
+            Font.get_font(FontStyle.TINY),
+            2,
+            6,
+            color,
+            "Tor",
         )
 
     def _render_time(self, time: str):
@@ -30,7 +35,12 @@ class ClockView(BaseView):
         font, font_size = Font.get_font(FontStyle.LARGE)
         x_pos = center_text(center_pos=16, text=time, font_width=font_size["width"])
         graphics.DrawText(
-            self._offscreen_canvas, font, x_pos, 15, self._time_color.value, time,
+            self._offscreen_canvas,
+            font,
+            x_pos,
+            15,
+            self._time_color.value,
+            time,
         )
 
     def _render(self):

@@ -19,13 +19,15 @@ class MainController(BaseController):
                 {
                     "key": "clock",
                     "instance": RestartableThread(
-                        thread=ClockView, rgb_matrix=self._rgb_matrix,
+                        thread=ClockView,
+                        rgb_matrix=self._rgb_matrix,
                     ),
                 },
                 {
                     "key": "weather",
                     "instance": RestartableThread(
-                        thread=WeatherView, rgb_matrix=self._rgb_matrix,
+                        thread=WeatherView,
+                        rgb_matrix=self._rgb_matrix,
                     ),
                 },
             ],
@@ -36,7 +38,8 @@ class MainController(BaseController):
                 {
                     "key": "inning_score",
                     "instance": RestartableThread(
-                        thread=InningScoreView, rgb_matrix=self._rgb_matrix,
+                        thread=InningScoreView,
+                        rgb_matrix=self._rgb_matrix,
                     ),
                 },
             ],
