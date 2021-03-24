@@ -6,14 +6,14 @@ import mlbgame
 from mlb.constants import Base, InningState
 
 
-class GamesTodayDataThread:
+class GamesTodayData:
     def __init__(self, games: List[mlbgame.game.GameScoreboard]):
         self.games = games
 
     @property
     def upcoming_game(self) -> Optional[mlbgame.game.GameScoreboard]:
         for game in self.games:
-            if game.game_start_time > datetime.now():
+            if game.date > datetime.now():
                 return game
         return None
 

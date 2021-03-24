@@ -5,7 +5,7 @@ from typing import Dict
 from rgbmatrix import FrameCanvas, graphics, RGBMatrix
 
 from data import Data
-from graphics.constants import Color
+from graphics.color import Color
 from graphics.font import Font, FontStyle
 from graphics.utils import center_object
 from mlb.constants import InningState
@@ -30,18 +30,18 @@ class InningScoreView(BaseView):
     def _render_inning_indicator(self, inning_state: InningState):
         if inning_state == InningState.TOP:
             # Arrow
-            graphics.DrawLine(canvas, 25, 5, 25, 5, Color.YELLOW.value)
-            graphics.DrawLine(canvas, 24, 5, 26, 5, Color.YELLOW.value)
-            graphics.DrawLine(canvas, 23, 5, 27, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 25, 5, 25, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 24, 5, 26, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 23, 5, 27, 5, Color.YELLOW.value)
         else:
             # Upside down arrow
-            graphics.DrawLine(canvas, 23, 5, 27, 5, Color.YELLOW.value)
-            graphics.DrawLine(canvas, 24, 5, 26, 5, Color.YELLOW.value)
-            graphics.DrawLine(canvas, 25, 5, 25, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 23, 5, 27, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 24, 5, 26, 5, Color.YELLOW.value)
+            graphics.DrawLine(self._offscreen_canvas, 25, 5, 25, 5, Color.YELLOW.value)
 
     def _render_inning(self, inning: int, inning_state: InningState):
-        self._render_inning_indicator()
-        font, font_size = Font.get_font(FontStyle.TINY)
+        self._render_inning_indicator(inning_state=inning_state)
+        font, _ = Font.get_font(FontStyle.TINY)
         graphics.DrawText(
             self._offscreen_canvas,
             font,

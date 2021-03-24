@@ -3,7 +3,7 @@ from typing import Dict
 from rgbmatrix import graphics
 
 from animations.base_animations import BaseAnimation
-from constants import Direction, Font
+from constants import Direction
 
 
 class ScrollingTextAnimation(BaseAnimation):

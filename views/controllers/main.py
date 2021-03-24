@@ -59,7 +59,7 @@ class MainController(BaseController):
             has_thread_for_key = self._pre_game_loop_controller.has_thread_for_key(
                 key=key
             )
-            if games_today.is_upcoming_game:
+            if games_today and games_today.is_upcoming_game:
                 if not has_thread_for_key:
                     self._pre_game_loop_controller.add_thread(
                         thread={

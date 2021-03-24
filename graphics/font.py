@@ -1,12 +1,14 @@
 import os
 from typing import Dict, Optional, Tuple
 
+from enum import Enum
+
 from rgbmatrix import graphics
 
 from utils import get_abs_file_path
 
 
-class FontStyle:
+class FontStyle(Enum):
     TINY = "tom-thumb"
     SMALL = "5x7"
     MEDIUM = "6x10"
@@ -19,8 +21,8 @@ class Font:
     @classmethod
     def get_font(cls, font_style: FontStyle) -> Tuple[graphics.Font, Optional[Dict]]:
         font_name = font_style.value
-        if font_name in self._font_cache:
-            return self._font_cache[font_name]
+        if font_name in cls._font_cache:
+            return cls._font_cache[font_name]
 
         font_paths = ["rpi-rgb-led-matrix/fonts"]
         for font_path in font_paths:
@@ -36,7 +38,7 @@ class Font:
                     if len(dimensions) == 2:
                         size = dict(width=int(dimensions[0]), height=int(dimensions[1]))
                 ret = (font, size)
-                self._font_cache[font_name] = ret
+                cls._font_cache[font_name] = ret
                 return ret
 
         raise ValueError(f"Could not find a font for {font_name}!")

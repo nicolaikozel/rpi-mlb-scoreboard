@@ -3,6 +3,7 @@
 		"location_color": [0, 0, 255],
 		"time_color": [255, 0, 0]
 	},
+	"team": "Blue Jays",
 	"upcoming_game": {
 		"team_names_color": [0, 0, 255],
 		"game_time_color": [218, 41, 28],
