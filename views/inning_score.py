@@ -53,6 +53,7 @@ class InningScoreView(BaseView):
             y_pos=8,
             size=7,
             color=color,
+            outline_only=not runner_on_1b,
         )
         draw_diamond(
             canvas=self._offscreen_canvas,
@@ -60,6 +61,7 @@ class InningScoreView(BaseView):
             y_pos=4,
             size=7,
             color=color,
+            outline_only=not runner_on_2b,
         )
         draw_diamond(
             canvas=self._offscreen_canvas,
@@ -67,6 +69,7 @@ class InningScoreView(BaseView):
             y_pos=8,
             size=7,
             color=color,
+            outline_only=not runner_on_3b,
         )
 
     def _render_outs(self, outs: int):
