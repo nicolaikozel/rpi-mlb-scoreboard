@@ -45,7 +45,7 @@ class MainController(BaseController):
             ],
             thread_change_delay=10,
         )
-        self._set_current_thread(thread=self._pre_game_loop_controller)
+        self._set_current_thread(thread=self._game_in_progress_loop_controller)
 
     def _update_thread(self):
         current_game = Data.get("current_game")

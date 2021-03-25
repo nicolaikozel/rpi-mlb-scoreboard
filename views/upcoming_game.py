@@ -80,5 +80,7 @@ class UpcomingGameView(BaseView):
         games_today = Data.get("games_today")
         if games_today and games_today.is_upcoming_game:
             self._looping_animations_controller.render(canvas=self._offscreen_canvas)
-            self._render_game_time(time=games_today.upcoming_game.game_start_time.split(" ", 1)[0])
+            self._render_game_time(
+                time=games_today.upcoming_game.game_start_time.split(" ", 1)[0]
+            )
             self._outline_canvas_animation.render(canvas=self._offscreen_canvas)
