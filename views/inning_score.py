@@ -7,6 +7,7 @@ from rgbmatrix import FrameCanvas, graphics, RGBMatrix
 from data import Data
 from graphics.color import Color
 from graphics.font import Font, FontStyle
+from graphics.shapes import draw_diamond
 from graphics.utils import center_object
 from mlb.constants import InningState
 from utils import get_abs_file_path
@@ -20,14 +21,14 @@ class InningScoreView(BaseView):
         color = Color.YELLOW.value
         if inning_state == InningState.TOP:
             # Arrow
-            graphics.DrawLine(self._offscreen_canvas, 24, 2, 24, 2, color)
-            graphics.DrawLine(self._offscreen_canvas, 23, 3, 25, 3, color)
-            graphics.DrawLine(self._offscreen_canvas, 22, 4, 26, 4, color)
+            graphics.DrawLine(self._offscreen_canvas, 25, 2, 25, 2, color)
+            graphics.DrawLine(self._offscreen_canvas, 24, 3, 26, 3, color)
+            graphics.DrawLine(self._offscreen_canvas, 23, 4, 27, 4, color)
         else:
             # Upside down arrow
-            graphics.DrawLine(self._offscreen_canvas, 22, 2, 26, 2, color)
-            graphics.DrawLine(self._offscreen_canvas, 23, 3, 25, 3, color)
-            graphics.DrawLine(self._offscreen_canvas, 24, 4, 24, 4, color)
+            graphics.DrawLine(self._offscreen_canvas, 23, 2, 27, 2, color)
+            graphics.DrawLine(self._offscreen_canvas, 24, 3, 26, 3, color)
+            graphics.DrawLine(self._offscreen_canvas, 25, 4, 25, 4, color)
 
     def _render_inning(self, inning: int, inning_state: InningState):
         color = Color.YELLOW.value
@@ -36,7 +37,7 @@ class InningScoreView(BaseView):
         graphics.DrawText(
             self._offscreen_canvas,
             font,
-            28,
+            29,
             5,
             color,
             str(inning),
@@ -45,7 +46,28 @@ class InningScoreView(BaseView):
     def _render_base_runners(
         self, runner_on_1b: bool, runner_on_2b: bool, runner_on_3b: bool
     ):
-        pass
+        color = Color.YELLOW.value
+        draw_diamond(
+            canvas=self._offscreen_canvas,
+            x_pos=16,
+            y_pos=8,
+            size=7,
+            color=color,
+        )
+        draw_diamond(
+            canvas=self._offscreen_canvas,
+            x_pos=21,
+            y_pos=4,
+            size=7,
+            color=color,
+        )
+        draw_diamond(
+            canvas=self._offscreen_canvas,
+            x_pos=26,
+            y_pos=8,
+            size=7,
+            color=color,
+        )
 
     def _render_outs(self, outs: int):
         color = Color.YELLOW.value
@@ -97,4 +119,4 @@ class InningScoreView(BaseView):
         self._render_pitch_count("1-2")
         self._render_outs(outs=1)
         self._render_base_runners(True, False, False)
-        self._render_inning(inning=3, inning_state=InningState.TOP)
+        self._render_inning(inning=3, inning_state=InningState.BOTTOM)
