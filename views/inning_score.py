@@ -9,7 +9,7 @@ from graphics.color import Color
 from graphics.font import Font, FontStyle
 from graphics.shapes import draw_diamond
 from graphics.utils import center_object
-from mlb.constants import InningState
+from mlb.constants import Base, InningState
 from utils import get_abs_file_path
 from views.base_views import BaseView
 
@@ -109,17 +109,17 @@ class InningScoreView(BaseView):
 
     def _render(self):
         current_game = Data.get("current_game")
-        # if current_game:
-        #    self._render_pitch_count(current_game.pitch_count)
-        #    self._render_outs(outs=current_game.outs)
-        #    self._render_base_runners(
-        #        runner_on_1b=,
-        #        runner_on_2b=,
-        #        runner_on_3b=,
-        #    )
-        #    inning, inning_state = current_game.inning_and_state
-        #    self._render_inning(inning=inning, inning_state=inning_state)
-        self._render_pitch_count("1-2")
-        self._render_outs(outs=1)
-        self._render_base_runners(True, False, False)
-        self._render_inning(inning=3, inning_state=InningState.BOTTOM)
+        if current_game:
+            self._render_pitch_count(pitch_count=current_game.formatted_pitch_count)
+            self._render_outs(outs=current_game.overview.outs)
+            self._render_base_runners(
+                runner_on_1b=current_game.is_runner_on_base(base=Base.FIRST),
+                runner_on_2b=current_game.is_runner_on_base(base=Base.SECOND),
+                runner_on_3b=current_game.is_runner_on_base(base=Base.THIRD),
+            )
+            inning, inning_state = current_game.inning_and_state
+            self._render_inning(inning=inning, inning_state=inning_state)
+        #self._render_pitch_count("1-2")
+        #self._render_outs(outs=1)
+        #self._render_base_runners(True, False, False)
+        #self._render_inning(inning=3, inning_state=InningState.BOTTOM)

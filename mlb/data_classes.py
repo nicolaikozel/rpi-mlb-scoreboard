@@ -46,5 +46,5 @@ class CurrentGameData:
         return self.overview.inning, inning_state
 
     @property
-    def pitch_count(self) -> str:
+    def formatted_pitch_count(self) -> str:
         return f"{self.overview.balls}-{self.overview.strikes}"
