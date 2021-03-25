@@ -7,7 +7,7 @@ from rgbmatrix import FrameCanvas, graphics, RGBMatrix
 from data import Data
 from graphics.color import Color
 from graphics.font import Font, FontStyle
-from graphics.shapes import draw_diamond
+from graphics.shapes import draw_diamond, draw_square
 from graphics.utils import center_object
 from mlb.constants import Base, InningState
 from utils import get_abs_file_path
@@ -74,26 +74,29 @@ class InningScoreView(BaseView):
 
     def _render_outs(self, outs: int):
         color = Color.YELLOW.value
-        graphics.DrawCircle(
-            self._offscreen_canvas,
-            2,
-            10,
-            1,
-            color,
+        draw_square(
+            canvas=self._offscreen_canvas,
+            x_pos=1,
+            y_pos=10,
+            size=3,
+            color=color,
+            outline_only=outs < 1,
         )
-        graphics.DrawCircle(
-            self._offscreen_canvas,
-            6,
-            10,
-            1,
-            color,
+        draw_square(
+            canvas=self._offscreen_canvas,
+            x_pos=5,
+            y_pos=10,
+            size=3,
+            color=color,
+            outline_only=outs < 2,
         )
-        graphics.DrawCircle(
-            self._offscreen_canvas,
-            10,
-            10,
-            1,
-            color,
+        draw_square(
+            canvas=self._offscreen_canvas,
+            x_pos=9,
+            y_pos=10,
+            size=3,
+            color=color,
+            outline_only=outs < 3,
         )
 
     def _render_pitch_count(self, pitch_count: str):
@@ -108,6 +111,7 @@ class InningScoreView(BaseView):
         )
 
     def _render(self):
+        """
         current_game = Data.get("current_game")
         if current_game:
             self._render_pitch_count(pitch_count=current_game.formatted_pitch_count)
@@ -119,7 +123,8 @@ class InningScoreView(BaseView):
             )
             inning, inning_state = current_game.inning_and_state
             self._render_inning(inning=inning, inning_state=inning_state)
-        #self._render_pitch_count("1-2")
-        #self._render_outs(outs=1)
-        #self._render_base_runners(True, False, False)
-        #self._render_inning(inning=3, inning_state=InningState.BOTTOM)
+        """
+        self._render_pitch_count("1-2")
+        self._render_outs(outs=2)
+        self._render_base_runners(True, False, False)
+        self._render_inning(inning=3, inning_state=InningState.BOTTOM)

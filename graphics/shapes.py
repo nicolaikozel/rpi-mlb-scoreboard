@@ -6,13 +6,35 @@ def _draw_line(
     y_pos: int,
     x1: int,
     x2: int,
-    endpoints_only: bool,
     color: graphics.Color,
+    endpoints_only: bool = False,
 ):
     for j in range(x1, x2):
         if endpoints_only and j > x1 and j < x2 - 1:
             continue
         canvas.SetPixel(j, y_pos, color.red, color.green, color.blue)
+
+
+def draw_square(
+    canvas: FrameCanvas,
+    x_pos: int,
+    y_pos: int,
+    size: int,
+    color: graphics.Color,
+    outline_only=False,
+):
+    lower_bound = y_pos
+    upper_bound = y_pos + size
+    for i in range(size):
+        endpoints_only = i > lower_bound and i < upper_bound
+        _draw_line(
+            canvas=canvas,
+            y_pos=y_pos + i,
+            x1=x_pos,
+            x2=x_pos + size,
+            endpoints_only=endpoints_only,
+            color=color,
+        )
 
 
 def draw_diamond(
