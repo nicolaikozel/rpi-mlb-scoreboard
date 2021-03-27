@@ -25,11 +25,11 @@ def draw_square(
 ):
     lower_bound = y_pos
     upper_bound = y_pos + size
-    for i in range(size):
-        endpoints_only = i > lower_bound and i < upper_bound
+    for i in range(lower_bound, upper_bound):
+        endpoints_only = outline_only and i > lower_bound and i < upper_bound - 1
         _draw_line(
             canvas=canvas,
-            y_pos=y_pos + i,
+            y_pos=i,
             x1=x_pos,
             x2=x_pos + size,
             endpoints_only=endpoints_only,
