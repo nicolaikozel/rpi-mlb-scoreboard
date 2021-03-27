@@ -53,7 +53,7 @@ class InningScoreView(BaseView):
             y_pos=8,
             size=7,
             color=color,
-            outline_only=not runner_on_1b,
+            outline_only=not runner_on_3b,
         )
         draw_diamond(
             canvas=self._offscreen_canvas,
@@ -69,7 +69,7 @@ class InningScoreView(BaseView):
             y_pos=8,
             size=7,
             color=color,
-            outline_only=not runner_on_3b,
+            outline_only=not runner_on_1b,
         )
 
     def _render_outs(self, outs: int):
@@ -111,7 +111,6 @@ class InningScoreView(BaseView):
         )
 
     def _render(self):
-        """
         current_game = Data.get("current_game")
         if current_game:
             self._render_pitch_count(pitch_count=current_game.formatted_pitch_count)
@@ -123,8 +122,3 @@ class InningScoreView(BaseView):
             )
             inning, inning_state = current_game.inning_and_state
             self._render_inning(inning=inning, inning_state=inning_state)
-        """
-        self._render_pitch_count("1-2")
-        self._render_outs(outs=2)
-        self._render_base_runners(True, False, False)
-        self._render_inning(inning=3, inning_state=InningState.BOTTOM)
