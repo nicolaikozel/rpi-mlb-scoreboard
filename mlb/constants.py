@@ -84,7 +84,7 @@ TEAM_COLORS = {
     "Mets": {
         "accent": {"r": 252, "g": 89, "b": 16},
     },
-    "Yankees": {"home": {"r": 12, "g": 35, "b": 64}},
+    "Yankees": {},
     "Athletics": {
         "text": {"r": 239, "g": 178, "b": 30},
         "accent": {"r": 239, "g": 178, "b": 30},

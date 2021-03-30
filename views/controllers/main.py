@@ -5,6 +5,7 @@ from data import Data
 from views.clock import ClockView
 from views.controllers.base_controllers import BaseController
 from views.controllers.looping_threads import LoopingThreadsController
+from views.game_score import GameScoreView
 from views.inning_score import InningScoreView
 from views.upcoming_game import UpcomingGameView
 from views.weather import WeatherView
@@ -36,12 +37,19 @@ class MainController(BaseController):
         self._game_in_progress_loop_controller = LoopingThreadsController(
             threads=[
                 {
-                    "key": "inning_score",
+                    "key": "game_score",
                     "instance": RestartableThread(
-                        thread=InningScoreView,
+                        thread=GameScoreView,
                         rgb_matrix=self._rgb_matrix,
                     ),
                 },
+                #{
+                #    "key": "inning_score",
+                #    "instance": RestartableThread(
+                #        thread=InningScoreView,
+                #        rgb_matrix=self._rgb_matrix,
+                #    ),
+                #},
             ],
             thread_change_delay=10,
         )

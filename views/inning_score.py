@@ -1,16 +1,10 @@
-from datetime import datetime
-from PIL import Image
-from typing import Dict
-
-from rgbmatrix import FrameCanvas, graphics, RGBMatrix
+from rgbmatrix import graphics
 
 from data import Data
 from graphics.color import Color
 from graphics.font import Font, FontStyle
 from graphics.shapes import draw_diamond, draw_square
-from graphics.utils import center_object
 from mlb.constants import Base, InningState
-from utils import get_abs_file_path
 from views.base_views import BaseView
 
 
