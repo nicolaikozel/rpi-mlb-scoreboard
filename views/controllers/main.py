@@ -70,11 +70,11 @@ class MainController(BaseController):
         else:
             # UPCOMING GAME
             # -------------
+            key = "upcoming_game"
+            has_thread_for_upcoming_game = (
+                self._pre_game_loop_controller.instance.has_thread_for_key(key=key)
+            )
             if games_today and games_today.is_upcoming_game:
-                key = "upcoming_game"
-                has_thread_for_upcoming_game = (
-                    self._pre_game_loop_controller.instance.has_thread_for_key(key=key)
-                )
                 # Add the upcoming game view to the pre-game loop
                 # if it hasn't already been added
                 if not has_thread_for_upcoming_game:
