@@ -29,19 +29,19 @@ class RestartableThread:
         self.reset()
 
     def is_alive(self) -> bool:
-        return self._instance.is_alive()
+        return self.instance.is_alive()
 
     def reset(self):
-        self._instance = self._thread(*self._args, **self._kwargs)
+        self.instance = self._thread(*self._args, **self._kwargs)
 
     def start(self):
-        self._instance.start()
+        self.instance.start()
 
     def join(self):
-        self._instance.join()
+        self.instance.join()
 
     def stop(self):
-        self._instance.stop()
+        self.instance.stop()
 
 
 class DataThread(StoppableThread, ABC):

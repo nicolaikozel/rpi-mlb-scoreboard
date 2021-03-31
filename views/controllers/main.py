@@ -15,7 +15,8 @@ class MainController(BaseController):
     def __init__(self, rgb_matrix: RGBMatrix, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._rgb_matrix = rgb_matrix
-        self._pre_game_loop_controller = LoopingThreadsController(
+        self._pre_game_loop_controller = RestartableThread(
+            thread=LoopingThreadsController,
             threads=[
                 {
                     "key": "clock",
@@ -34,7 +35,8 @@ class MainController(BaseController):
             ],
             thread_change_delay=10,
         )
-        self._game_in_progress_loop_controller = LoopingThreadsController(
+        self._game_in_progress_loop_controller = RestartableThread(
+            thread=LoopingThreadsController,
             threads=[
                 {
                     "key": "game_score",
@@ -53,23 +55,30 @@ class MainController(BaseController):
             ],
             thread_change_delay=10,
         )
-        self._set_current_thread(thread=self._game_in_progress_loop_controller)
+        self._set_current_thread(thread=self._pre_game_loop_controller)
 
     def _update_thread(self):
         current_game = Data.get("current_game")
         games_today = Data.get("games_today")
 
+        # GAME IN PROGRESS
+        # ----------------
         if current_game:
+            # Switch to the game in progress loop if we aren't showing it already
             if self._current_thread != self._game_in_progress_loop_controller:
                 self._switch_thread(thread=self._game_in_progress_loop_controller)
         else:
-            key = "upcoming_games"
-            has_thread_for_key = self._pre_game_loop_controller.has_thread_for_key(
-                key=key
-            )
+            # UPCOMING GAME
+            # -------------
             if games_today and games_today.is_upcoming_game:
-                if not has_thread_for_key:
-                    self._pre_game_loop_controller.add_thread(
+                key = "upcoming_game"
+                has_thread_for_upcoming_game = (
+                    self._pre_game_loop_controller.instance.has_thread_for_key(key=key)
+                )
+                # Add the upcoming game view to the pre-game loop
+                # if it hasn't already been added
+                if not has_thread_for_upcoming_game:
+                    self._pre_game_loop_controller.instance.add_thread(
                         thread={
                             "key": key,
                             "instance": RestartableThread(
@@ -78,6 +87,12 @@ class MainController(BaseController):
                             ),
                         },
                     )
-            else:
-                if has_thread_for_key:
-                    self._pre_game_loop_controller.remove_thread(key=key)
+            elif has_thread_for_upcoming_game:
+                # Remove the upcoming game view from the pre-game loop
+                self._pre_game_loop_controller.instance.remove_thread(key=key)
+
+            # PRE GAME
+            # --------
+            # Switch to the pre-game loop if we were showing the game in progress loop
+            if self._current_thread == self._game_in_progress_loop_controller:
+                self._switch_thread(thread=self._pre_game_loop_controller)

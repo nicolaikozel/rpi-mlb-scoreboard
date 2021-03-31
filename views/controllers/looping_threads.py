@@ -11,9 +11,12 @@ class LoopingThreadsController(BaseController):
         self._threads = threads
         self._thread_index = 0
         self._thread_change_delay = thread_change_delay
-        self._set_current_thread(
-            thread=self._get_thread_instance(index=self._thread_index)
-        )
+        # This is in case the looping threads controller is itself
+        # a restartable thread. We need to reset the target thread
+        # or else we will get an error "threads can only be started once"
+        thread = self._get_thread_instance(index=self._thread_index)
+        thread.reset()
+        self._set_current_thread(thread=thread)
 
     def _get_thread_instance(self, index: int) -> RestartableThread:
         return self._threads[index]["instance"]
