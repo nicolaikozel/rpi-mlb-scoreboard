@@ -43,13 +43,13 @@ class MainController(BaseController):
                         rgb_matrix=self._rgb_matrix,
                     ),
                 },
-                #{
-                #    "key": "inning_score",
-                #    "instance": RestartableThread(
-                #        thread=InningScoreView,
-                #        rgb_matrix=self._rgb_matrix,
-                #    ),
-                #},
+                {
+                    "key": "inning_score",
+                    "instance": RestartableThread(
+                        thread=InningScoreView,
+                        rgb_matrix=self._rgb_matrix,
+                    ),
+                },
             ],
             thread_change_delay=10,
         )
