@@ -48,6 +48,6 @@ class ScrollingTextAnimation(BaseAnimation):
             self._font,
             self._x_pos,
             self._y_pos,
-            self._color.value,
+            self._color,
             self._text,
         )

@@ -53,7 +53,7 @@ class MainController(BaseController):
                     ),
                 },
             ],
-            thread_change_delay=10,
+            thread_change_delay=5,
         )
         self._set_current_thread(thread=self._pre_game_loop_controller)
 
