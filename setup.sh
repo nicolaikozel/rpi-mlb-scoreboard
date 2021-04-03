@@ -7,7 +7,7 @@ sudo make install-python PYTHON=$(which python3)
 echo "Done."
 echo "Checking out master and pulling the latest changes..."
 git reset --hard
-git checkout master
+git checkout main
 git fetch origin --prune
 git pull
 make
