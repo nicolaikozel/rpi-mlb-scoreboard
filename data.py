@@ -6,7 +6,7 @@ from weather.open_weather import OpenWeatherDataThread
 class Data:
     _data = {
         "current_game": CurrentGameDataThread(refresh_rate=5, daemon=True),
-        "games_today": GamesTodayDataThread(refresh_rate=3600, daemon=True),
+        "games_today": GamesTodayDataThread(refresh_rate=300, daemon=True),
         "weather": OpenWeatherDataThread(refresh_rate=30, daemon=True),
     }
 
